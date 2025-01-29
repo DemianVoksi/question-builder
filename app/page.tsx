@@ -1,101 +1,163 @@
-import Image from "next/image";
+'use client';
+
+import Navbar from '@/components/navbar';
+// import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ModeToggle } from '@/components/ui/mode-toggle';
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { DialogTrigger } from '@radix-ui/react-dialog';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+	return (
+		<div className='items-center justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
+			<Navbar />
+			<main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button variant='green'>Add question</Button>
+					</DialogTrigger>
+					<DialogContent className='max-w-[1425px] h-[800px] flex flex-col'>
+						<DialogHeader>
+							<DialogTitle>Enter question</DialogTitle>
+							<DialogDescription>
+								Enter a new question here. Click submit when you're done.
+							</DialogDescription>
+						</DialogHeader>
+						<form className='flex flex-row'>
+							<div className='flex flex-col w-[33%]'>
+								<div className='mb-2'>
+									<Label htmlFor='question' className='text-right'>
+										Question:
+									</Label>
+									<Input
+										id='name'
+										placeholder='Question'
+										className='w-[400px]'
+									/>
+								</div>
+								<div className='mb-2'>
+									<Label htmlFor='answer1' className='text-right'>
+										Answer 1:
+									</Label>
+									<Input
+										id='answer1'
+										placeholder='Answer 1'
+										className='w-[400px]'
+									/>
+								</div>
+								<div className='mb-2'>
+									<Label htmlFor='answer2' className='text-right'>
+										Answer 2:
+									</Label>
+									<Input
+										id='answer2'
+										placeholder='Answer 2'
+										className='w-[400px]'
+									/>
+								</div>
+								<div className='mb-2'>
+									<Label htmlFor='answer3' className='text-right'>
+										Answer 3:
+									</Label>
+									<Input
+										id='answer3'
+										placeholder='Answer 3'
+										className='w-[400px]'
+									/>
+								</div>
+								<div className='mb-2'>
+									<Label htmlFor='answer4' className='text-right'>
+										Answer 4:
+									</Label>
+									<Input
+										id='answer4'
+										placeholder='Answer 4'
+										className='w-[400px]'
+									/>
+								</div>
+								<div className='mb-2'>
+									<Label htmlFor='correct-answer' className='text-right'>
+										Correct answer:
+									</Label>
+									<Input
+										id='correct-answer'
+										placeholder='Correct answer'
+										className='w-[400px]'
+									/>
+								</div>
+							</div>
+							<Card className='flex flex-col justify-center'>
+								<CardContent className='flex flex-row justify-center'>
+									<div className='flex flex-col pl-10 w-[33%]'>
+										<div className=' flex flex-col items-start mb-2 w-[400px]'>
+											<p>Difficulty:</p>
+											<div className='flex flex-row items-center'>
+												<Input
+													id='easy'
+													type='radio'
+													value='easy'
+													className='mr-1'
+												/>
+												<Label htmlFor='easy'>Easy</Label>
+											</div>
+											<div className='flex flex-row items-center'>
+												<Input
+													id='medium'
+													type='radio'
+													value='medium'
+													className='mr-1'
+												/>
+												<Label htmlFor='medium'>Medium</Label>
+											</div>
+											<div className='flex flex-row items-center'>
+												<Input
+													id='hard'
+													type='radio'
+													value='hard'
+													className='mr-1'
+												/>
+												<Label htmlFor='hard'>Hard</Label>
+											</div>
+										</div>
+									</div>
+								</CardContent>
+							</Card>
+							<div className='flex flex-col w-[33%]'></div>
+						</form>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+						<DialogFooter className='flex flex-row sm:justify-center'>
+							<Button type='submit' variant='green'>
+								Submit
+							</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
+			</main>
+		</div>
+	);
 }
