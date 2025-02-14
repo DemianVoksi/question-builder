@@ -2,39 +2,49 @@ import z from 'zod';
 
 export const QuestionFormSchema = z.object({
 	question: z.string().min(1),
-	answers: z
-		.object({
-			choices: z
-				.array(
-					z.object({
-						answer: z.string().min(1),
-					})
-				)
-				.min(4)
-				.max(4),
-			correctAnswer: z.string().min(1),
-		})
-		.superRefine((data, ctx) => {
-			const isValidAnswer = data.choices.some(
-				(choice) => choice.answer === data.correctAnswer
-			);
-			if (!isValidAnswer) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					path: ['correctAnswer'],
-					message: 'The correct answer must be one of the answers',
-				});
-			}
-		}),
+	answers: z.object({
+		choice1: z.string().min(1, 'Choice 1 is required'),
+		choice2: z.string().min(1, 'Choice 2 is required'),
+		choice3: z.string().min(1, 'Choice 3 is required'),
+		choice4: z.string().min(1, 'Choice 4 is required'),
+	}),
+	correctAnswer: z.enum(['choice1', 'choice2', 'choice3', 'choice4'], {
+		message: 'You must select a correct answer',
+	}),
+	// answers: z
+	// 	.object({
+	// 		choices: z
+	// 			.array(
+	// 				z.object({
+	// 					answer: z.string().min(1),
+	// 				})
+	// 			)
+	// 			.min(4)
+	// 			.max(4),
+	// 		correctAnswer: z.string().min(1),
+	// 	})
+	// 	.superRefine((data, ctx) => {
+	// 		const isValidAnswer = data.choices.some(
+	// 			(choice) => choice.answer === data.correctAnswer
+	// 		);
+	// 		if (!isValidAnswer) {
+	// 			ctx.addIssue({
+	// 				code: z.ZodIssueCode.custom,
+	// 				path: ['correctAnswer'],
+	// 				message: 'The correct answer must be one of the answers',
+	// 			});
+	// 		}
+	// 	}),
 	tags: z
 		.array(
 			z.object({
 				tag: z.string(),
 			})
 		)
-		.max(7),
-	difficulty: z.enum(['easy', 'medium', 'hard']),
-	category: z.string().min(1),
+		.max(7)
+		.optional(),
+	difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
+	category: z.string().min(1).optional(),
 	// id
 	// author
 	// time submitted

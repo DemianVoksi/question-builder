@@ -25,12 +25,29 @@ import { Label } from '@/components/ui/label';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { Form, useFieldArray, useForm } from 'react-hook-form';
-import { FormControl, FormField, FormItem, FormMessage } from './ui/form';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { Checkbox } from './ui/checkbox';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from './ui/form';
 
 const QuestionBuilderForm = () => {
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
+		defaultValues: {
+			question: '',
+			answers: {
+				choice1: '',
+				choice2: '',
+				choice3: '',
+				choice4: '',
+			},
+		},
 	});
 
 	const { fields, append, remove } = useFieldArray({
@@ -41,7 +58,12 @@ const QuestionBuilderForm = () => {
 	const onInvalid = (errors: any) => console.error(errors);
 
 	function submitter(data: QuestionFormType) {
-		console.log(data);
+		const correctChoice = data.correctAnswer.toString(); // choice1
+		// const correctKey = Object.keys(data.answers).find(key => key === correctChoice)!
+		const correctKey = correctChoice as keyof typeof data.answers;
+		const finalCorrect = data.answers[correctKey];
+		console.log(data.answers);
+		console.log(finalCorrect);
 	}
 
 	return (
@@ -57,7 +79,7 @@ const QuestionBuilderForm = () => {
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submitter)}>
+					<form onSubmit={form.handleSubmit(submitter, onInvalid)}>
 						<FormField
 							control={form.control}
 							name='question'
@@ -70,6 +92,82 @@ const QuestionBuilderForm = () => {
 								</FormItem>
 							)}
 						/>
+						<FormField
+							control={form.control}
+							name='answers.choice1'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input placeholder='Choice 1' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='answers.choice2'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input placeholder='Choice 2' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='answers.choice3'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input placeholder='Choice 3' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='answers.choice4'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input placeholder='Choice 4' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						{['choice1', 'choice2', 'choice3', 'choice4'].map(
+							(choice, index) => (
+								<FormField
+									key={choice + 'Checkbox'}
+									control={form.control}
+									name='correctAnswer'
+									render={({ field }) => (
+										<FormItem className='flex items-center space-x-2'>
+											<Checkbox
+												checked={field.value === choice}
+												onCheckedChange={() =>
+													form.setValue(
+														'correctAnswer',
+														choice as
+															| 'choice1'
+															| 'choice2'
+															| 'choice3'
+															| 'choice4'
+													)
+												}
+											/>
+											<FormLabel>Choice {index + 1} is correct</FormLabel>
+										</FormItem>
+									)}
+								/>
+							)
+						)}
+						<Button type='submit'>submit</Button>
 					</form>
 				</Form>
 				{/* <form
@@ -172,10 +270,6 @@ const QuestionBuilderForm = () => {
 					</Card>
 					<div className='flex flex-col w-[33%]'></div>
 				</form> */}
-
-				<DialogFooter className='flex flex-row sm:justify-center'>
-					<Button type='submit'>Submit</Button>
-				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
