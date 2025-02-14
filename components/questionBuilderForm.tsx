@@ -22,9 +22,27 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { QuestionFormSchema, QuestionFormType } from '@/types/types';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 const QuestionBuilderForm = () => {
+	const form = useForm<QuestionFormType>({
+		resolver: zodResolver(QuestionFormSchema),
+	});
+
+	const { fields, append, remove } = useFieldArray({
+		name: 'tags',
+		control: form.control,
+	});
+
+	const onInvalid = (errors: any) => console.error(errors);
+
+	function submitter(data: QuestionFormType) {
+		console.log(data);
+	}
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -37,7 +55,10 @@ const QuestionBuilderForm = () => {
 						Enter a new question here. Click submit when you're done.
 					</DialogDescription>
 				</DialogHeader>
-				<form className='flex flex-row'>
+				<form
+					className='flex flex-row'
+					onSubmit={form.handleSubmit(submitter, onInvalid)}
+				>
 					<div className='flex flex-col w-[33%]'>
 						<div className='mb-2'>
 							<Label htmlFor='question' className='text-right'>
