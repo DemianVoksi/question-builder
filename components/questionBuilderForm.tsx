@@ -25,7 +25,8 @@ import { Label } from '@/components/ui/label';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Form, useFieldArray, useForm } from 'react-hook-form';
+import { FormControl, FormField, FormItem, FormMessage } from './ui/form';
 
 const QuestionBuilderForm = () => {
 	const form = useForm<QuestionFormType>({
@@ -46,7 +47,7 @@ const QuestionBuilderForm = () => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant='green'>Add question</Button>
+				<Button>Add question</Button>
 			</DialogTrigger>
 			<DialogContent className='max-w-[1425px] h-[800px] flex flex-col'>
 				<DialogHeader>
@@ -55,7 +56,23 @@ const QuestionBuilderForm = () => {
 						Enter a new question here. Click submit when you're done.
 					</DialogDescription>
 				</DialogHeader>
-				<form
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(submitter)}>
+						<FormField
+							control={form.control}
+							name='question'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input placeholder='Question...' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</form>
+				</Form>
+				{/* <form
 					className='flex flex-row'
 					onSubmit={form.handleSubmit(submitter, onInvalid)}
 				>
@@ -154,12 +171,10 @@ const QuestionBuilderForm = () => {
 						</CardContent>
 					</Card>
 					<div className='flex flex-col w-[33%]'></div>
-				</form>
+				</form> */}
 
 				<DialogFooter className='flex flex-row sm:justify-center'>
-					<Button type='submit' variant='green'>
-						Submit
-					</Button>
+					<Button type='submit'>Submit</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
