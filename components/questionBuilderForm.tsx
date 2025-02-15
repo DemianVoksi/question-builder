@@ -23,6 +23,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
@@ -65,6 +72,8 @@ const QuestionBuilderForm = () => {
 		console.log('Answers:', data.answers);
 		console.log('Correct answer:', finalCorrect);
 		console.log('Difficulty:', data.difficulty);
+		console.log('Category:', data.category);
+		data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
 	}
 
 	function submitter(data: QuestionFormType) {
@@ -175,7 +184,7 @@ const QuestionBuilderForm = () => {
 													)
 												}
 											/>
-											<FormLabel>Choice {index + 1} is correct</FormLabel>
+											<FormLabel>Answer {index + 1} is correct</FormLabel>
 										</FormItem>
 									)}
 								/>
@@ -209,6 +218,76 @@ const QuestionBuilderForm = () => {
 												<Label htmlFor='hard'>Hard</Label>
 											</div>
 										</RadioGroup>
+									</FormControl>
+								</FormItem>
+							)}
+						/>
+						{/*
+						Tags
+						*/}
+						<div>
+							{fields.map((field, index) => (
+								<FormField
+									key={field.id}
+									control={form.control}
+									name={`tags.${index}.tag`}
+									render={({ field }) => (
+										<div className='flex items-center space-x-2'>
+											<Input
+												{...field}
+												placeholder='Enter tag'
+												className='flex-1'
+											/>
+											<Button
+												type='button'
+												variant='destructive'
+												onClick={() => remove(index)}
+											>
+												Remove tag
+											</Button>
+										</div>
+									)}
+								/>
+							))}
+							{fields.length < 7 && (
+								<Button
+									type='button'
+									variant='outline'
+									onClick={() => append({ tag: '' })}
+								>
+									Add Tag
+								</Button>
+							)}
+						</div>
+						<FormField
+							key='category'
+							control={form.control}
+							name='category'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Select value={field.value} onValueChange={field.onChange}>
+											<SelectTrigger className='w-[280px]'>
+												<SelectValue placeholder='Category' />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value='biology'>Biology</SelectItem>
+												<SelectItem value='film-and-tv'>Film & TV</SelectItem>
+												<SelectItem value='food-and-drinks'>
+													Food & Drinks
+												</SelectItem>
+												<SelectItem value='geography'>Geography</SelectItem>
+												<SelectItem value='history'>History</SelectItem>
+												<SelectItem value='literature'>Literature</SelectItem>
+												<SelectItem value='mathematics'>Mathematics</SelectItem>
+												<SelectItem value='music'>Music</SelectItem>
+												<SelectItem value='politics'>Politics</SelectItem>
+												<SelectItem value='religion'>Religion</SelectItem>
+												<SelectItem value='science'>Science</SelectItem>
+												<SelectItem value='sport'>Sport</SelectItem>
+												<SelectItem value='technology'>Technology</SelectItem>
+											</SelectContent>
+										</Select>
 									</FormControl>
 								</FormItem>
 							)}

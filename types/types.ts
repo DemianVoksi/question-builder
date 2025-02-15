@@ -41,10 +41,9 @@ export const QuestionFormSchema = z.object({
 				tag: z.string(),
 			})
 		)
-		.max(7)
-		.optional(),
+		.max(7),
 	difficulty: z.enum(['easy', 'medium', 'hard']),
-	category: z.string().min(1).optional(),
+	category: z.string().min(1),
 	// id
 	// author
 	// time submitted
