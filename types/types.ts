@@ -43,7 +43,7 @@ export const QuestionFormSchema = z.object({
 		)
 		.max(7)
 		.optional(),
-	difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
+	difficulty: z.enum(['easy', 'medium', 'hard']),
 	category: z.string().min(1).optional(),
 	// id
 	// author
