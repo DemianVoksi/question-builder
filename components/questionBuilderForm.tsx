@@ -1,17 +1,6 @@
 'use client';
 
-import React from 'react';
-
-import Navbar from '@/components/navbar';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
 import {
 	Dialog,
 	DialogContent,
@@ -33,6 +22,7 @@ import {
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
+import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Checkbox } from './ui/checkbox';
 import {
@@ -83,7 +73,7 @@ const QuestionBuilderForm = () => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button>Add question</Button>
+				<Button variant='success'>Add question</Button>
 			</DialogTrigger>
 			<DialogContent className='max-w-[1425px] h-[800px] flex flex-col'>
 				<DialogHeader>
@@ -95,205 +85,267 @@ const QuestionBuilderForm = () => {
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(submitter, onInvalid)}>
 						{/*
-						Question
+						Question and answers
 						*/}
-						<FormField
-							control={form.control}
-							name='question'
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input placeholder='Question...' {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						{/*
-						Answers
-						*/}
-						<FormField
-							control={form.control}
-							name='answers.choice1'
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input placeholder='Choice 1' {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='answers.choice2'
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input placeholder='Choice 2' {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='answers.choice3'
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input placeholder='Choice 3' {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='answers.choice4'
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input placeholder='Choice 4' {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						{/*
-						Correct answer checkbox
-						*/}
-						{['choice1', 'choice2', 'choice3', 'choice4'].map(
-							(choice, index) => (
+						<div className='flex flex-row'>
+							<div className='flex flex-col w-[50%] space-y-1 mb-4'>
 								<FormField
-									key={choice + 'Checkbox'}
 									control={form.control}
-									name='correctAnswer'
+									name='question'
 									render={({ field }) => (
-										<FormItem className='flex items-center space-x-2'>
-											<Checkbox
-												checked={field.value === choice}
-												onCheckedChange={() =>
-													form.setValue(
-														'correctAnswer',
-														choice as
-															| 'choice1'
-															| 'choice2'
-															| 'choice3'
-															| 'choice4'
-													)
-												}
-											/>
-											<FormLabel>Answer {index + 1} is correct</FormLabel>
+										<FormItem className='flex flex-row items-center space-x-2'>
+											<FormLabel className='flex h-full justify-center items-center'>
+												Question:
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder='Question...'
+													{...field}
+													className='w-[75%] flex'
+												/>
+											</FormControl>
+											<FormMessage />
 										</FormItem>
 									)}
 								/>
-							)
-						)}
-						{/*
-						Difficulty radio
+								<FormField
+									control={form.control}
+									name='answers.choice1'
+									render={({ field }) => (
+										<FormItem className='flex flex-row space-x-2'>
+											<FormLabel className='flex justify-center items-center'>
+												Answer 1:
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder='Answer 1'
+													{...field}
+													className='w-[75%]'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='answers.choice2'
+									render={({ field }) => (
+										<FormItem className='flex flex-row space-x-2'>
+											<FormLabel className='flex justify-center items-center'>
+												Answer 2:
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder='Answer 2'
+													{...field}
+													className='w-[75%]'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='answers.choice3'
+									render={({ field }) => (
+										<FormItem className='flex flex-row space-x-2'>
+											<FormLabel className='flex justify-center items-center'>
+												Answer 3:
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder='Answer 3'
+													{...field}
+													className='w-[75%]'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='answers.choice4'
+									render={({ field }) => (
+										<FormItem className='flex flex-row space-x-2'>
+											<FormLabel className='flex justify-center items-center'>
+												Answer 4:
+											</FormLabel>
+											<FormControl>
+												<Input
+													placeholder='Answer 4'
+													{...field}
+													className='w-[75%]'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<div className='flex flex-col space-x-2 pt-4'>
+									<Label className='mb-2'>Choose correct answer:</Label>
+									{['choice1', 'choice2', 'choice3', 'choice4'].map(
+										(choice, index) => (
+											<FormField
+												key={choice + 'Checkbox'}
+												control={form.control}
+												name='correctAnswer'
+												render={({ field }) => (
+													<FormItem className='flex items-center space-x-2'>
+														<Checkbox
+															checked={field.value === choice}
+															onCheckedChange={() =>
+																form.setValue(
+																	'correctAnswer',
+																	choice as
+																		| 'choice1'
+																		| 'choice2'
+																		| 'choice3'
+																		| 'choice4'
+																)
+															}
+														/>
+														<FormLabel>Answer {index + 1} is correct</FormLabel>
+													</FormItem>
+												)}
+											/>
+										)
+									)}
+								</div>
+								<div className='flex flex-col pt-4'>
+									<FormField
+										key='difficulty'
+										control={form.control}
+										name='difficulty'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Difficulty:</FormLabel>
+												<FormControl>
+													<RadioGroup
+														onValueChange={field.onChange}
+														// defaultValue={field.value}
+													>
+														<div className='flex items-center space-x-2'>
+															<RadioGroupItem value='easy' id='easy' />
+															<Label htmlFor='easy'>Easy</Label>
+														</div>
+														<div className='flex items-center space-x-2'>
+															<RadioGroupItem value='medium' id='medium' />
+															<Label htmlFor='medium'>Medium</Label>
+														</div>
+														<div className='flex items-center space-x-2'>
+															<RadioGroupItem value='hard' id='hard' />
+															<Label htmlFor='hard'>Hard</Label>
+														</div>
+													</RadioGroup>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
+								</div>
+							</div>
+							{/*
+						Correct answer checkbox
 						*/}
-						<FormField
-							key='difficulty'
-							control={form.control}
-							name='difficulty'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Difficulty:</FormLabel>
-									<FormControl>
-										<RadioGroup
-											onValueChange={field.onChange}
-											// defaultValue={field.value}
+
+							<div className='w-[50%]'>
+								<FormField
+									key='category'
+									control={form.control}
+									name='category'
+									render={({ field }) => (
+										<FormItem className='mb-4'>
+											<FormControl>
+												<Select
+													value={field.value}
+													onValueChange={field.onChange}
+												>
+													<SelectTrigger className='w-[280px]'>
+														<SelectValue placeholder='Category' />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value='biology'>Biology</SelectItem>
+														<SelectItem value='film-and-tv'>
+															Film & TV
+														</SelectItem>
+														<SelectItem value='food-and-drinks'>
+															Food & Drinks
+														</SelectItem>
+														<SelectItem value='geography'>Geography</SelectItem>
+														<SelectItem value='history'>History</SelectItem>
+														<SelectItem value='literature'>
+															Literature
+														</SelectItem>
+														<SelectItem value='mathematics'>
+															Mathematics
+														</SelectItem>
+														<SelectItem value='music'>Music</SelectItem>
+														<SelectItem value='politics'>Politics</SelectItem>
+														<SelectItem value='religion'>Religion</SelectItem>
+														<SelectItem value='science'>Science</SelectItem>
+														<SelectItem value='sport'>Sport</SelectItem>
+														<SelectItem value='technology'>
+															Technology
+														</SelectItem>
+													</SelectContent>
+												</Select>
+											</FormControl>
+										</FormItem>
+									)}
+								/>
+								<div className='space-y-3'>
+									{fields.map((field, index) => (
+										<div className='flex flex-row justify-end items-center w-full'>
+											<FormField
+												key={field.id}
+												control={form.control}
+												name={`tags.${index}.tag`}
+												render={({ field }) => (
+													<div className='flex items-center space-x-2 w-full'>
+														<Input
+															{...field}
+															placeholder='Enter tag'
+															className='w-[75%]'
+														/>
+														<Button
+															type='button'
+															variant='danger'
+															onClick={() => remove(index)}
+														>
+															Remove tag
+														</Button>
+													</div>
+												)}
+											/>
+										</div>
+									))}
+									{fields.length < 7 && (
+										<Button
+											type='button'
+											variant='success'
+											onClick={() => append({ tag: '' })}
 										>
-											<div className='flex items-center space-x-2'>
-												<RadioGroupItem value='easy' id='easy' />
-												<Label htmlFor='easy'>Easy</Label>
-											</div>
-											<div className='flex items-center space-x-2'>
-												<RadioGroupItem value='medium' id='medium' />
-												<Label htmlFor='medium'>Medium</Label>
-											</div>
-											<div className='flex items-center space-x-2'>
-												<RadioGroupItem value='hard' id='hard' />
-												<Label htmlFor='hard'>Hard</Label>
-											</div>
-										</RadioGroup>
-									</FormControl>
-								</FormItem>
-							)}
-						/>
+											Add Tag
+										</Button>
+									)}
+								</div>
+							</div>
+						</div>
+
 						{/*
 						Tags
 						*/}
-						<div>
-							{fields.map((field, index) => (
-								<FormField
-									key={field.id}
-									control={form.control}
-									name={`tags.${index}.tag`}
-									render={({ field }) => (
-										<div className='flex items-center space-x-2'>
-											<Input
-												{...field}
-												placeholder='Enter tag'
-												className='flex-1'
-											/>
-											<Button
-												type='button'
-												variant='destructive'
-												onClick={() => remove(index)}
-											>
-												Remove tag
-											</Button>
-										</div>
-									)}
-								/>
-							))}
-							{fields.length < 7 && (
-								<Button
-									type='button'
-									variant='outline'
-									onClick={() => append({ tag: '' })}
-								>
-									Add Tag
-								</Button>
-							)}
-						</div>
-						<FormField
-							key='category'
-							control={form.control}
-							name='category'
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Select value={field.value} onValueChange={field.onChange}>
-											<SelectTrigger className='w-[280px]'>
-												<SelectValue placeholder='Category' />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value='biology'>Biology</SelectItem>
-												<SelectItem value='film-and-tv'>Film & TV</SelectItem>
-												<SelectItem value='food-and-drinks'>
-													Food & Drinks
-												</SelectItem>
-												<SelectItem value='geography'>Geography</SelectItem>
-												<SelectItem value='history'>History</SelectItem>
-												<SelectItem value='literature'>Literature</SelectItem>
-												<SelectItem value='mathematics'>Mathematics</SelectItem>
-												<SelectItem value='music'>Music</SelectItem>
-												<SelectItem value='politics'>Politics</SelectItem>
-												<SelectItem value='religion'>Religion</SelectItem>
-												<SelectItem value='science'>Science</SelectItem>
-												<SelectItem value='sport'>Sport</SelectItem>
-												<SelectItem value='technology'>Technology</SelectItem>
-											</SelectContent>
-										</Select>
-									</FormControl>
-								</FormItem>
-							)}
-						/>
 
-						<Button type='submit'>submit</Button>
+						{/*
+						Category select
+						*/}
+						<div className='flex justify-center mt-4'>
+							<Button type='submit' variant='black'>
+								Submit
+							</Button>
+						</div>
 					</form>
 				</Form>
 			</DialogContent>
