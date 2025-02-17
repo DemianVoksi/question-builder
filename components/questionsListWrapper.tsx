@@ -6,10 +6,17 @@ const QuestionsListWrapper = () => {
 	const questions: mockQuestionsType[] = mockQuestions;
 
 	return (
-		<div className='border border-green-700 w-full flex flex-col justify-center items-center overflow-y-scroll'>
-			{questions.map((question) => (
-				<SingleQuestion key={question.id} {...question} />
-			))}
+		// <div className='w-full h-[calc(100vh-4rem)] flex flex-col justify-start  items-center overflow-y-auto px-4 border border-green-700'>
+		// 	{questions.map((question) => (
+		// 		<SingleQuestion key={question.id} {...question} />
+		// 	))}
+		// </div>
+		<div className='h-full overflow-y-auto px-4 mt-2'>
+			<div className='space-y-1 pb-4'>
+				{questions.map((question) => (
+					<SingleQuestion key={question.id} {...question} />
+				))}
+			</div>
 		</div>
 	);
 };

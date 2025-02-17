@@ -1,16 +1,24 @@
 'use client';
 
+import Filter from '@/components/filter';
 import Navbar from '@/components/navbar';
 import QuestionBuilderWrapper from '@/components/questionBuilderWrapper';
 import QuestionsListWrapper from '@/components/questionsListWrapper';
 
 export default function Home() {
 	return (
-		<div className='items-center justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]'>
+		<div className=' flex flex-col items-center h-screen font-[family-name:var(--font-geist-sans)]'>
 			<Navbar />
-			<main className='flex flex-col gap-8 row-start-2 items-center justify-center sm:items-start border border-red-700 w-full'>
+			<main className='flex-1 flex flex-col row-start-2 items-center sm:items-start overflow-hidden w-full'>
 				<QuestionBuilderWrapper />
-				<QuestionsListWrapper />
+				<div className='flex-1 w-full flex flex-row justify-between min-h-0'>
+					<div className='w-1/4 border border-red-700 mt-2'>
+						<Filter />
+					</div>
+					<div className='flex-1'>
+						<QuestionsListWrapper />
+					</div>
+				</div>
 			</main>
 		</div>
 	);
