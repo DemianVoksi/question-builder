@@ -12,7 +12,7 @@ export default function Home() {
 			<main className='flex-1 flex flex-col row-start-2 items-center sm:items-start overflow-hidden w-full'>
 				<QuestionBuilderWrapper />
 				<div className='flex-1 w-full flex flex-row justify-between min-h-0'>
-					<div className='w-1/4 border border-red-700 mt-2'>
+					<div className='w-1/4'>
 						<Filter />
 					</div>
 					<div className='flex-1'>

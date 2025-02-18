@@ -6,7 +6,7 @@ const Navbar = () => {
 	return (
 		<nav
 			style={{ backgroundColor: 'var(--navbar-bg-color)' }}
-			className='w-full h-12 mb-12 flex flex-row justify-center items-center sticky top-0 z-50'
+			className='w-full h-12 mb-4 flex flex-row justify-center items-center sticky top-0 z-50'
 		>
 			<div className='w-1/4 h-full flex flex-row justify-start items-center pl-5 text-orange-400'>
 				Episteme
@@ -16,7 +16,7 @@ const Navbar = () => {
 				<div className='pr-3'>
 					<ModeToggle />
 				</div>{' '}
-				<Button variant='green'>User</Button>
+				<Button variant='success'>User</Button>
 			</div>
 		</nav>
 	);
