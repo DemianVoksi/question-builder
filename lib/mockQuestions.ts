@@ -5,6 +5,7 @@ export type mockQuestionsType = {
 	answer3: string;
 	answer4: string;
 	correctAnswer: string;
+	category: string;
 	tags: string[];
 	tag1?: string;
 	tag2?: string;
@@ -29,6 +30,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Gothenburg',
 		answer4: 'Uppsala',
 		correctAnswer: 'Stockholm',
+		category: 'geography',
 		tags: [
 			'geography',
 			'Europe',
@@ -58,6 +60,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'The Lodge',
 		answer4: '24 Sussex Drive',
 		correctAnswer: 'The White House',
+		category: 'politics',
 		tags: ['politics', 'residence', 'building'],
 		tag1: 'politics',
 		tag2: 'residence',
@@ -77,6 +80,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Naram-Sin',
 		answer4: 'Sargon',
 		correctAnswer: 'Sargon',
+		category: 'history',
 		tags: [
 			'history',
 			'Akkadian Empire',
@@ -104,6 +108,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Manne Siegbahn',
 		answer4: 'Werner Heisenberg',
 		correctAnswer: 'Niels Bohr',
+		category: 'science',
 		tags: ['Nobel Prize', 'science', 'physics', 'Denmark', 'Scandinavia'],
 		tag1: 'Nobel Prize',
 		tag2: 'science',
@@ -125,6 +130,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'nine',
 		answer4: 'twelve',
 		correctAnswer: 'nine',
+		category: 'literature',
 		tags: ['literature', 'Dante Alighieri', 'Middle Ages', 'Italy'],
 		tag1: 'literature',
 		tag2: 'Dante Alighieri',
@@ -145,6 +151,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'George Best',
 		answer4: 'Wayne Rooney',
 		correctAnswer: 'Wayne Rooney',
+		category: 'sport',
 		tags: [
 			'sports',
 			'Manchester United',
@@ -172,6 +179,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: '1917',
 		answer4: 'A Beautiful Mind',
 		correctAnswer: 'Blade Runner 2049',
+		category: 'film-and-tv',
 		tags: ['movies', 'cinematography', 'Academy Awards'],
 		tag1: 'movies',
 		tag2: 'cinematography',
@@ -190,6 +198,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Wolfgang Amadeus Mozart',
 		answer4: 'Richard Wagner',
 		correctAnswer: 'Wolfgang Amadeus Mozart',
+		category: 'music',
 		tags: ['music', 'opera', 'composers'],
 		tag1: 'music',
 		tag2: 'opera',
@@ -209,6 +218,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Breaking Bad',
 		answer4: 'The Sopranos',
 		correctAnswer: 'The Wire',
+		category: 'film-and-tv',
 		tags: ['television'],
 		tag1: 'television',
 		difficulty: 'medium',
@@ -225,6 +235,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Laura',
 		answer4: 'Samantha',
 		correctAnswer: 'Samantha',
+		category: 'film-and-tv',
 		tags: ['X-Files', 'television', 'shows'],
 		tag1: 'X-Files',
 		tag2: 'television',
@@ -243,6 +254,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Lyon',
 		answer4: 'Bordeaux',
 		correctAnswer: 'Paris',
+		category: 'geography',
 		tags: ['France', 'capital city', 'geography', 'Europe'],
 		tag1: 'France',
 		tag2: 'capital city',
@@ -262,6 +274,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Antananarivo',
 		answer4: 'Antanannarivo',
 		correctAnswer: 'Antananarivo',
+		category: 'geography',
 		tags: ['geography', 'Africa', 'Madagascar', 'islands'],
 		tag1: 'geography',
 		tag2: 'Africa',
@@ -281,6 +294,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'K2',
 		answer4: 'Denali',
 		correctAnswer: 'Mount Everest',
+		category: 'geography',
 		tags: ['mountains', 'geography'],
 		tag1: 'mountains',
 		tag2: 'geography',
@@ -298,6 +312,7 @@ export const mockQuestions: mockQuestionsType[] = [
 		answer3: 'Arctic Ocean',
 		answer4: 'Pacific Ocean',
 		correctAnswer: 'Pacific Ocean',
+		category: 'geography',
 		tags: ['oceans', 'geography', 'water', 'sea'],
 		tag1: 'oceans',
 		tag2: 'geography',
