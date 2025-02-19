@@ -32,7 +32,7 @@ const Filter = () => {
 	};
 
 	return (
-		<div className='flex flex-col gap-6 p-4'>
+		<div className='flex flex-col gap-6 p-4 font-lato'>
 			<h2 className='font-bold underline'>Filter</h2>
 			<div className='space-y-2'>
 				<Label htmlFor='question'>Question Content</Label>

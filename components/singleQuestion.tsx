@@ -63,7 +63,7 @@ const SingleQuestion = ({
 	}
 
 	return (
-		<div className='w-full flex flex-col items-start'>
+		<div className='w-full flex flex-col items-start font-lato'>
 			<Accordion
 				type='single'
 				collapsible

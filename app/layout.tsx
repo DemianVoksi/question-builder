@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
+import { Lato } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
 
@@ -12,6 +13,14 @@ const geistMono = localFont({
 	src: './fonts/GeistMonoVF.woff',
 	variable: '--font-geist-mono',
 	weight: '100 900',
+});
+
+export const lato = Lato({
+	weight: ['300', '400', '700'],
+	style: 'normal',
+	subsets: ['latin'],
+	variable: '--font-lato',
+	display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -27,7 +36,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} ${lato.variable} antialiased`}
 			>
 				<ThemeProvider
 					attribute='class'

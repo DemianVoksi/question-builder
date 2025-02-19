@@ -73,9 +73,11 @@ const QuestionBuilderForm = () => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant='success'>Add question</Button>
+				<Button variant='success' className='font-lato'>
+					Add question
+				</Button>
 			</DialogTrigger>
-			<DialogContent className='max-w-[1425px] h-[800px] flex flex-col'>
+			<DialogContent className='max-w-[1425px] h-[800px] flex flex-col font-lato'>
 				<DialogHeader>
 					<DialogTitle>Enter question</DialogTitle>
 					<DialogDescription>
@@ -88,20 +90,18 @@ const QuestionBuilderForm = () => {
 						Question and answers
 						*/}
 						<div className='flex flex-row'>
-							<div className='flex flex-col w-[50%] space-y-1 mb-4'>
+							<div className='flex flex-col w-[50%] space-y-3 mb-4'>
 								<FormField
 									control={form.control}
 									name='question'
 									render={({ field }) => (
-										<FormItem className='flex flex-row items-center space-x-2'>
-											<FormLabel className='flex h-full justify-center items-center'>
-												Question:
-											</FormLabel>
+										<FormItem className='flex flex-col items-start justify-center mb-1'>
+											<FormLabel>Question:</FormLabel>
 											<FormControl>
 												<Input
 													placeholder='Question...'
 													{...field}
-													className='w-[75%] flex'
+													className='w-[75%]'
 												/>
 											</FormControl>
 											<FormMessage />
@@ -112,10 +112,8 @@ const QuestionBuilderForm = () => {
 									control={form.control}
 									name='answers.choice1'
 									render={({ field }) => (
-										<FormItem className='flex flex-row space-x-2'>
-											<FormLabel className='flex justify-center items-center'>
-												Answer 1:
-											</FormLabel>
+										<FormItem className='flex flex-col items-start justify-center mb-1'>
+											<FormLabel>Answer 1:</FormLabel>
 											<FormControl>
 												<Input
 													placeholder='Answer 1'
@@ -131,10 +129,8 @@ const QuestionBuilderForm = () => {
 									control={form.control}
 									name='answers.choice2'
 									render={({ field }) => (
-										<FormItem className='flex flex-row space-x-2'>
-											<FormLabel className='flex justify-center items-center'>
-												Answer 2:
-											</FormLabel>
+										<FormItem className='flex flex-col items-start justify-center mb-1'>
+											<FormLabel>Answer 2:</FormLabel>
 											<FormControl>
 												<Input
 													placeholder='Answer 2'
@@ -150,10 +146,8 @@ const QuestionBuilderForm = () => {
 									control={form.control}
 									name='answers.choice3'
 									render={({ field }) => (
-										<FormItem className='flex flex-row space-x-2'>
-											<FormLabel className='flex justify-center items-center'>
-												Answer 3:
-											</FormLabel>
+										<FormItem className='flex flex-col items-start justify-center mb-1'>
+											<FormLabel>Answer 3:</FormLabel>
 											<FormControl>
 												<Input
 													placeholder='Answer 3'
@@ -169,10 +163,8 @@ const QuestionBuilderForm = () => {
 									control={form.control}
 									name='answers.choice4'
 									render={({ field }) => (
-										<FormItem className='flex flex-row space-x-2'>
-											<FormLabel className='flex justify-center items-center'>
-												Answer 4:
-											</FormLabel>
+										<FormItem className='flex flex-col items-start justify-center'>
+											<FormLabel>Answer 4:</FormLabel>
 											<FormControl>
 												<Input
 													placeholder='Answer 4'
@@ -184,7 +176,7 @@ const QuestionBuilderForm = () => {
 										</FormItem>
 									)}
 								/>
-								<div className='flex flex-col space-x-2 pt-4'>
+								<div className='flex flex-col space-x-2 pt-2'>
 									<Label className='mb-2'>Choose correct answer:</Label>
 									{['choice1', 'choice2', 'choice3', 'choice4'].map(
 										(choice, index) => (
@@ -193,7 +185,7 @@ const QuestionBuilderForm = () => {
 												control={form.control}
 												name='correctAnswer'
 												render={({ field }) => (
-													<FormItem className='flex items-center space-x-2'>
+													<FormItem className='flex flex-row items-center space-x-2'>
 														<Checkbox
 															checked={field.value === choice}
 															onCheckedChange={() =>
@@ -207,14 +199,16 @@ const QuestionBuilderForm = () => {
 																)
 															}
 														/>
-														<FormLabel>Answer {index + 1} is correct</FormLabel>
+														<FormLabel className='h-full items-center m-0 leading-none '>
+															Answer {index + 1} is correct
+														</FormLabel>
 													</FormItem>
 												)}
 											/>
 										)
 									)}
 								</div>
-								<div className='flex flex-col pt-4'>
+								<div className='flex flex-col pt-2'>
 									<FormField
 										key='difficulty'
 										control={form.control}
