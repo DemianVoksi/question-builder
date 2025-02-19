@@ -1,5 +1,7 @@
 import { mockQuestionsType } from '@/lib/mockQuestions';
+import { time } from 'console';
 import React from 'react';
+import EditQuestionForm from './editQuestionForm';
 import {
 	Accordion,
 	AccordionContent,
@@ -106,7 +108,24 @@ const SingleQuestion = ({
 							{approvedBy && <div>Approved by: {approvedBy}</div>}
 						</div>
 						<div className='flex flex-1 flex-col justify-around items-end pr-2'>
-							<Button variant='success'>Edit Question</Button>
+							<div>
+								<EditQuestionForm
+									question={question}
+									answer1={answer1}
+									answer2={answer2}
+									answer3={answer3}
+									answer4={answer4}
+									correctAnswer={correctAnswer}
+									tags={tags}
+									category={category}
+									difficulty={difficulty}
+									author={author}
+									id={id}
+									timeSubmitted={timeSubmitted}
+									approved={approved}
+									approvedBy={approvedBy}
+								/>
+							</div>
 							<Button variant='danger'>Delete Question</Button>
 						</div>
 					</AccordionContent>

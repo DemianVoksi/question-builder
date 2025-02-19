@@ -19,6 +19,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { mockQuestionsType } from '@/lib/mockQuestions';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
@@ -34,19 +35,30 @@ import {
 	FormMessage,
 } from './ui/form';
 
-const QuestionBuilderForm = () => {
+const EditQuestionForm = (props: mockQuestionsType) => {
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
 		defaultValues: {
-			question: '',
+			question: props.question,
 			answers: {
-				choice1: '',
-				choice2: '',
-				choice3: '',
-				choice4: '',
+				choice1: props.answer1,
+				choice2: props.answer2,
+				choice3: props.answer3,
+				choice4: props.answer4,
 			},
+			correctAnswer: getCorrectAnswerChoice(props),
+			difficulty: props.difficulty as 'easy' | 'medium' | 'hard',
+			category: props.category,
+			tags: props.tags.map((tag) => ({ tag })),
 		},
 	});
+
+	function getCorrectAnswerChoice(props: mockQuestionsType) {
+		if (props.correctAnswer === props.answer1) return 'choice1';
+		if (props.correctAnswer === props.answer2) return 'choice2';
+		if (props.correctAnswer === props.answer3) return 'choice3';
+		if (props.correctAnswer === props.answer4) return 'choice4';
+	}
 
 	const { fields, append, remove } = useFieldArray({
 		name: 'tags',
@@ -69,19 +81,18 @@ const QuestionBuilderForm = () => {
 	function submitter(data: QuestionFormType) {
 		processData(data);
 	}
-
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button variant='success' className='font-lato'>
-					Add question
+					Edit question
 				</Button>
 			</DialogTrigger>
 			<DialogContent className='max-w-[1425px] h-[800px] flex flex-col font-lato'>
 				<DialogHeader>
-					<DialogTitle>Enter question</DialogTitle>
+					<DialogTitle>Edit question</DialogTitle>
 					<DialogDescription>
-						Enter a new question here. Click submit when you're done.
+						Edit the question here. Click submit when you're done.
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
@@ -188,16 +199,11 @@ const QuestionBuilderForm = () => {
 													<FormItem className='flex flex-row items-center space-x-2'>
 														<Checkbox
 															checked={field.value === choice}
-															onCheckedChange={() =>
-																form.setValue(
-																	'correctAnswer',
-																	choice as
-																		| 'choice1'
-																		| 'choice2'
-																		| 'choice3'
-																		| 'choice4'
-																)
-															}
+															onCheckedChange={() => {
+																if (field.value !== choice) {
+																	field.onChange(choice);
+																}
+															}}
 														/>
 														<FormLabel className='h-full items-center m-0 leading-none '>
 															Answer {index + 1} is correct
@@ -219,7 +225,8 @@ const QuestionBuilderForm = () => {
 												<FormControl>
 													<RadioGroup
 														onValueChange={field.onChange}
-														// defaultValue={field.value}
+														defaultValue={field.value}
+														value={field.value}
 													>
 														<div className='flex items-center space-x-2'>
 															<RadioGroupItem value='easy' id='easy' />
@@ -329,15 +336,12 @@ const QuestionBuilderForm = () => {
 						</div>
 
 						{/*
-						Tags
-						*/}
+            add switch to toggle approved status
+            */}
 
-						{/*
-						Category select
-						*/}
 						<div className='flex justify-center mt-4'>
 							<Button type='submit' variant='black'>
-								Submit
+								Edit question
 							</Button>
 						</div>
 					</form>
@@ -347,4 +351,4 @@ const QuestionBuilderForm = () => {
 	);
 };
 
-export default QuestionBuilderForm;
+export default EditQuestionForm;
