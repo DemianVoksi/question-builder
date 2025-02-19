@@ -44,10 +44,10 @@ export const QuestionFormSchema = z.object({
 		.max(7),
 	difficulty: z.enum(['easy', 'medium', 'hard']),
 	category: z.string().min(1),
+	approved: z.boolean().optional(),
 	// id
 	// author
 	// time submitted
-	// approved
 	// approved by
 });
 

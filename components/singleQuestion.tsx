@@ -96,8 +96,11 @@ const SingleQuestion = ({
 						<div className='flex flex-col gap-2 w-[20%] border-r border-zinc-200 px-3'>
 							<p className='flex w-full justify-center'>Tags: </p>
 							<div className='flex flex-row flex-wrap max-w-[100%] justify-center'>
-								{tags.map((tag) => (
-									<p className='my-1 mr-1 bg-gradient-to-r from-zinc-100 to-zinc-200 dark:text-black rounded-md px-2 py-2'>
+								{tags.map((tag, index) => (
+									<p
+										key={index}
+										className='my-1 mr-1 bg-gradient-to-r from-zinc-100 to-zinc-200 dark:text-black rounded-md px-2 py-2'
+									>
 										{tag}
 									</p>
 								))}
@@ -107,7 +110,7 @@ const SingleQuestion = ({
 							<div>Approved: {approved ? 'Yes' : 'No'}</div>
 							{approvedBy && <div>Approved by: {approvedBy}</div>}
 						</div>
-						<div className='flex flex-1 flex-col justify-around items-end pr-2'>
+						<div className='flex flex-1 flex-col justify-end items-end pr-2 space-y-2'>
 							<div>
 								<EditQuestionForm
 									question={question}

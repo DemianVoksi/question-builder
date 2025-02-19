@@ -34,6 +34,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from './ui/form';
+import { Switch } from './ui/switch';
 
 const EditQuestionForm = (props: mockQuestionsType) => {
 	const form = useForm<QuestionFormType>({
@@ -50,6 +51,7 @@ const EditQuestionForm = (props: mockQuestionsType) => {
 			difficulty: props.difficulty as 'easy' | 'medium' | 'hard',
 			category: props.category,
 			tags: props.tags.map((tag) => ({ tag })),
+			approved: props.approved,
 		},
 	});
 
@@ -75,6 +77,8 @@ const EditQuestionForm = (props: mockQuestionsType) => {
 		console.log('Correct answer:', finalCorrect);
 		console.log('Difficulty:', data.difficulty);
 		console.log('Category:', data.category);
+		console.log('Approved:', data.approved);
+
 		data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
 	}
 
@@ -298,7 +302,10 @@ const EditQuestionForm = (props: mockQuestionsType) => {
 								/>
 								<div className='space-y-3'>
 									{fields.map((field, index) => (
-										<div className='flex flex-row justify-end items-center w-full'>
+										<div
+											key={index}
+											className='flex flex-row justify-end items-center w-full'
+										>
 											<FormField
 												key={field.id}
 												control={form.control}
@@ -331,6 +338,24 @@ const EditQuestionForm = (props: mockQuestionsType) => {
 											Add Tag
 										</Button>
 									)}
+								</div>
+								<div className='mt-4'>
+									{/* If the user has the position of admin */}
+									<FormField
+										key='approved'
+										name='approved'
+										control={form.control}
+										render={({ field }) => (
+											<div className='flex flex-col space-y-2'>
+												<Label htmlFor='approved'>Approved:</Label>
+												<Switch
+													id='approved'
+													checked={field.value}
+													onCheckedChange={field.onChange}
+												/>
+											</div>
+										)}
+									/>
 								</div>
 							</div>
 						</div>
