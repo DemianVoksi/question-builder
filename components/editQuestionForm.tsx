@@ -73,6 +73,12 @@ const EditQuestionForm = (props: mockQuestionsType) => {
 		const correctAnswerChoice = data.correctAnswer.toString();
 		const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
 		const finalCorrect = data.answers[correctAnswerKey];
+
+		const isTrue = new Map();
+		for (const [key, value] of Object.entries(data.answers)) {
+			isTrue.set(key, value === correctAnswerKey ? true : false);
+		}
+
 		console.log('Answers:', data.answers);
 		console.log('Correct answer:', finalCorrect);
 		console.log('Difficulty:', data.difficulty);

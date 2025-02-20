@@ -22,6 +22,42 @@ export type mockQuestionsType = {
 	approvedBy: string | null;
 };
 
+type nestedMock = {
+	question: string;
+	answer1: {
+		answer: string;
+		isCorrect: boolean;
+	};
+	answer2: {
+		answer: string;
+		isCorrect: boolean;
+	};
+	answer3: {
+		answer: string;
+		isCorrect: boolean;
+	};
+	answer4: {
+		answer: string;
+		isCorrect: boolean;
+	};
+	correctAnswer: string;
+	category: string;
+	tags: string[];
+	tag1?: string;
+	tag2?: string;
+	tag3?: string;
+	tag4?: string;
+	tag5?: string;
+	tag6?: string;
+	tag7?: string;
+	difficulty: string;
+	id: number;
+	author: string;
+	timeSubmitted: string;
+	approved: boolean;
+	approvedBy: string | null;
+};
+
 export const mockQuestions: mockQuestionsType[] = [
 	{
 		question: 'What is the capital city of Sweden?',
