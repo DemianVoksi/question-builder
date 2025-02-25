@@ -4,7 +4,6 @@ import { auth } from '@/auth';
 import { db } from '@/db/drizzle';
 import { answers, questions, tags } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 
 function generateId() {
@@ -28,49 +27,65 @@ export async function fetchQuestions() {
 	}
 }
 
-export async function addQuestion(question: any) {
+export async function addQuestion(
+	questionId: string,
+	question: string,
+	difficulty: 'easy' | 'medium' | 'hard',
+	category: string
+) {
 	const session = await auth();
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
 	} else {
 		const userId = session?.user?.id!;
-
 		const newQuestion = await db.insert(questions).values({
-			id: generateId(),
-			question: question.question,
+			id: questionId,
+			question: question,
 			authorId: userId,
 			submittedAt: new Date(),
-			difficulty: question.difficulty,
-			category: question.category,
+			difficulty: difficulty,
+			category: category,
 			approved: false,
 			approvedBy: null,
 		});
-
 		return newQuestion;
 	}
 }
 
-export async function addAnswers(answers: any) {
+export async function addAnswer(
+	answer: string,
+	isTrue: boolean,
+	questionId: string
+) {
 	const session = await auth();
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
 	} else {
 		const userId = session?.user?.id!;
-
-		// loop over answers and insert
+		const newAnswer = await db.insert(answers).values({
+			id: generateId(),
+			answer: answer,
+			isTrue: isTrue,
+			questionId: questionId,
+		});
+		return newAnswer;
 	}
 }
 
-export async function addTags(tags: any) {
+export async function addTag(tag: string, questionId: string) {
 	const session = await auth();
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
 	} else {
 		const userId = session?.user?.id!;
-
-		// loop over tags and insert
+		const newTag = await db.insert(tags).values({
+			id: generateId(),
+			tag: tag,
+			questionId: questionId,
+		});
+		return newTag;
 	}
 }

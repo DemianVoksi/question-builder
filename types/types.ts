@@ -54,3 +54,14 @@ On submit:
 }
 
 export type QuestionFormType = z.infer<typeof QuestionFormSchema>;
+
+export type QuestionType = {
+	id: string;
+	question: string;
+	authorId: string;
+	submittedAt: Date;
+	difficulty: 'easy' | 'medium' | 'hard';
+	category: string;
+	approved: boolean;
+	approvedBy: string | null;
+};

@@ -19,11 +19,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { addAnswer, addQuestion, addTag } from '@/db/actions';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
+import { revalidatePath } from 'next/cache';
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 import { Checkbox } from './ui/checkbox';
 import {
 	Form,
@@ -55,7 +58,13 @@ const NewQuestionForm = () => {
 
 	const onInvalid = (errors: any) => console.error(errors);
 
+	function generateId() {
+		const uuid = uuidv4();
+		return uuid;
+	}
+
 	function processData(data: QuestionFormType) {
+		const questionId = generateId();
 		const correctAnswerChoice = data.correctAnswer.toString();
 		const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
 		const finalCorrect = data.answers[correctAnswerKey];
@@ -65,17 +74,30 @@ const NewQuestionForm = () => {
 			isTrue.set(key, value === correctAnswerKey ? true : false);
 		}
 
+		// add question
+		// addQuestion(questionId, data.question, data.difficulty, data.category);
+
+		// add answers
 		for (const value of Object.values(data.answers)) {
 			console.log(`Answer ${value} is: ${(value === finalCorrect).toString()}`);
+			// addAnswer(value, value === finalCorrect, questionId)
 			// const status = value === finalCorrect;
 			// console.log(status);
 		}
+
+		// add tags
+		data.tags?.map((tag) => {
+			console.log('Tag:', tag.tag);
+			//  addTag(tag.tag, questionId)
+		});
+
 		// console.log('Answers:', data.answers);
 		// console.log('Correct answer:', finalCorrect);
 		// console.log('Difficulty:', data.difficulty);
 		// console.log('Category:', data.category);
 		// console.log(isTrue);
 		// data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
+		revalidatePath('/');
 	}
 
 	function submitter(data: QuestionFormType) {
