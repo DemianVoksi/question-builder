@@ -22,7 +22,7 @@ export const roleEnum = pgEnum('role_type', [
 
 // Users table
 export const users = pgTable('users', {
-	id: integer('id').primaryKey(),
+	id: text('id').primaryKey(),
 	email: text('email').notNull(),
 	emailVerified: timestamp('email_verified'),
 	image: text('image'),
@@ -32,9 +32,11 @@ export const users = pgTable('users', {
 
 // Questions table
 export const questions = pgTable('questions', {
-	id: integer('id').primaryKey(),
+	id: text('id').primaryKey(),
 	question: text('question').notNull(),
-	authorId: integer('author_id').references(() => users.id),
+	authorId: text('author_id')
+		.notNull()
+		.references(() => users.id),
 	submittedAt: timestamp('submitted_at').defaultNow(),
 	difficulty: difficultyEnum('difficulty').notNull(),
 	category: text('category').notNull(),
@@ -44,17 +46,17 @@ export const questions = pgTable('questions', {
 
 // Answers table
 export const answers = pgTable('answers', {
-	id: integer('id').primaryKey(),
+	id: text('id').primaryKey(),
 	answer: text('answer').notNull(),
 	isTrue: boolean('is_true').notNull(),
-	questionId: integer('question_id').references(() => questions.id),
+	questionId: text('question_id').references(() => questions.id),
 });
 
 // Tags table
 export const tags = pgTable('tags', {
-	id: integer('id').primaryKey(),
+	id: text('id').primaryKey(),
 	tag: text('tag').notNull(),
-	questionId: integer('question_id').references(() => questions.id),
+	questionId: text('question_id').references(() => questions.id),
 });
 
 // Relations

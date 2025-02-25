@@ -11,30 +11,6 @@ export const QuestionFormSchema = z.object({
 	correctAnswer: z.enum(['choice1', 'choice2', 'choice3', 'choice4'], {
 		message: 'You must select a correct answer',
 	}),
-	// answers: z
-	// 	.object({
-	// 		choices: z
-	// 			.array(
-	// 				z.object({
-	// 					answer: z.string().min(1),
-	// 				})
-	// 			)
-	// 			.min(4)
-	// 			.max(4),
-	// 		correctAnswer: z.string().min(1),
-	// 	})
-	// 	.superRefine((data, ctx) => {
-	// 		const isValidAnswer = data.choices.some(
-	// 			(choice) => choice.answer === data.correctAnswer
-	// 		);
-	// 		if (!isValidAnswer) {
-	// 			ctx.addIssue({
-	// 				code: z.ZodIssueCode.custom,
-	// 				path: ['correctAnswer'],
-	// 				message: 'The correct answer must be one of the answers',
-	// 			});
-	// 		}
-	// 	}),
 	tags: z
 		.array(
 			z.object({

@@ -65,11 +65,17 @@ const NewQuestionForm = () => {
 			isTrue.set(key, value === correctAnswerKey ? true : false);
 		}
 
-		console.log('Answers:', data.answers);
-		console.log('Correct answer:', finalCorrect);
-		console.log('Difficulty:', data.difficulty);
-		console.log('Category:', data.category);
-		data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
+		for (const value of Object.values(data.answers)) {
+			console.log(`Answer ${value} is: ${(value === finalCorrect).toString()}`);
+			// const status = value === finalCorrect;
+			// console.log(status);
+		}
+		// console.log('Answers:', data.answers);
+		// console.log('Correct answer:', finalCorrect);
+		// console.log('Difficulty:', data.difficulty);
+		// console.log('Category:', data.category);
+		// console.log(isTrue);
+		// data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
 	}
 
 	function submitter(data: QuestionFormType) {
