@@ -21,37 +21,7 @@ export const QuestionFormSchema = z.object({
 	difficulty: z.enum(['easy', 'medium', 'hard']),
 	category: z.string().min(1),
 	approved: z.boolean().optional(),
-	// id
-	// author
-	// time submitted
-	// approved by
 });
-
-{
-	/*
-On submit: 
-1) Question:
-- question from input
-- difficulty from input
-- category from input
-- author id from session
-- submitted at from time now
-- approved false
-- approved by null
-- id uuid
-
-2) Answers:
-- map over answers from input
-- each answer answer from input, question id from question id
-
-3) Correct answer:
-- correct answer from input, question id from question id
-
-4) Tags: 
-- map over tags from input, question id from question id
-  
-*/
-}
 
 export type QuestionFormType = z.infer<typeof QuestionFormSchema>;
 
@@ -88,4 +58,37 @@ export type QuestionAnswersTagsType = {
 	timeSubmitted: Date;
 	approved: boolean;
 	approvedBy: string | null;
+};
+
+export type AllQuestionsQueryType = {
+	questionId: string;
+	questionText: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+	category: string;
+	authorId: string;
+	submittedAt: Date | null;
+	approved: boolean | null;
+	approvedBy: number | null;
+	answerId: string | null;
+	answerText: string | null;
+	answerIsCorrect: boolean | null;
+	tagId: string | null;
+	tagName: string | null;
+};
+
+export type StructuredQuestionType = {
+	questionId: string;
+	questionText: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+	category: string;
+	authorId: string;
+	submittedAt: Date | null;
+	approved: boolean | null;
+	approvedBy: number | null;
+	answers: {
+		id: string;
+		answer: string;
+		isTrue: boolean;
+	}[];
+	tags: string[];
 };
