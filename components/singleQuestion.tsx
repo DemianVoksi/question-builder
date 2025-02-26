@@ -1,3 +1,4 @@
+import { deleteQuestion } from '@/db/actions';
 import { mockQuestionsType } from '@/lib/mockQuestions';
 import { time } from 'console';
 import React from 'react';
@@ -51,6 +52,10 @@ const SingleQuestion = ({
 		if (difficulty === 'hard') {
 			return 'text-red-700';
 		}
+	}
+
+	async function handleDeleteQuestion() {
+		// await deleteQuestion(id);
 	}
 
 	function parseTimeSubmitted(timeSubmitted: string) {

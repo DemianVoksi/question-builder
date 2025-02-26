@@ -89,3 +89,17 @@ export async function addTag(tag: string, questionId: string) {
 		return newTag;
 	}
 }
+
+export async function editQuestion() {}
+
+export async function deleteQuestion(id: string) {
+	const session = await auth();
+
+	if (!session?.user?.id) {
+		throw new Error('User not found');
+	} else {
+		await db.delete(questions).where(eq(questions.id, id));
+		await db.delete(answers).where(eq(answers.questionId, id));
+		await db.delete(tags).where(eq(tags.questionId, id));
+	}
+}

@@ -65,3 +65,27 @@ export type QuestionType = {
 	approved: boolean;
 	approvedBy: string | null;
 };
+
+export type QuestionAnswersTagsType = {
+	question: string;
+	answer1: string;
+	answer2: string;
+	answer3: string;
+	answer4: string;
+	correctAnswer: string;
+	category: string;
+	tags: string[];
+	// tag1?: string;
+	// tag2?: string;
+	// tag3?: string;
+	// tag4?: string;
+	// tag5?: string;
+	// tag6?: string;
+	// tag7?: string;
+	difficulty: string;
+	id: string;
+	author: string;
+	timeSubmitted: Date;
+	approved: boolean;
+	approvedBy: string | null;
+};
