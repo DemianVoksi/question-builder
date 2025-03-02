@@ -1,9 +1,11 @@
+import type { AdapterAccount } from '@auth/core/adapters';
 import { relations } from 'drizzle-orm';
 import {
 	boolean,
 	integer,
 	pgEnum,
 	pgTable,
+	primaryKey,
 	text,
 	timestamp,
 } from 'drizzle-orm/pg-core';
@@ -21,8 +23,8 @@ export const roleEnum = pgEnum('role_type', [
 ]);
 
 // Users table
-export const users = pgTable('users', {
-	id: text('id').primaryKey(),
+export const users = pgTable('user', {
+	id: text('id').notNull().primaryKey(),
 	email: text('email').notNull(),
 	emailVerified: timestamp('email_verified'),
 	image: text('image'),
@@ -31,7 +33,7 @@ export const users = pgTable('users', {
 });
 
 // Questions table
-export const questions = pgTable('questions', {
+export const questions = pgTable('question', {
 	id: text('id').primaryKey(),
 	question: text('question').notNull(),
 	authorId: text('author_id')
@@ -41,11 +43,11 @@ export const questions = pgTable('questions', {
 	difficulty: difficultyEnum('difficulty').notNull(),
 	category: text('category').notNull(),
 	approved: boolean('approved').default(false),
-	approvedBy: integer('approved_by').references(() => users.id),
+	approvedBy: text('approved_by').references(() => users.id),
 });
 
 // Answers table
-export const answers = pgTable('answers', {
+export const answers = pgTable('answer', {
 	id: text('id').primaryKey(),
 	answer: text('answer').notNull(),
 	isTrue: boolean('is_true').notNull(),
@@ -53,11 +55,59 @@ export const answers = pgTable('answers', {
 });
 
 // Tags table
-export const tags = pgTable('tags', {
+export const tags = pgTable('tag', {
 	id: text('id').primaryKey(),
 	tag: text('tag').notNull(),
 	questionId: text('question_id').references(() => questions.id),
 });
+
+export const accounts = pgTable(
+	'account',
+	{
+		userId: text('userId')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		type: text('type').$type<AdapterAccount['type']>().notNull(),
+		provider: text('provider').notNull(),
+		providerAccountId: text('providerAccountId').notNull(),
+		refresh_token: text('refresh_token'),
+		access_token: text('access_token'),
+		expires_at: integer('expires_at'),
+		token_type: text('token_type'),
+		scope: text('scope'),
+		id_token: text('id_token'),
+		session_state: text('session_state'),
+	},
+	(account) => [
+		{
+			compoundKey: primaryKey({
+				columns: [account.provider, account.providerAccountId],
+			}),
+		},
+	]
+);
+
+export const sessions = pgTable('session', {
+	sessionToken: text('sessionToken').notNull().primaryKey(),
+	userId: text('userId')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	expires: timestamp('expires', { mode: 'date' }).notNull(),
+});
+
+export const verificationTokens = pgTable(
+	'verificationToken',
+	{
+		identifier: text('identifier').notNull(),
+		token: text('token').notNull(),
+		expires: timestamp('expires', { mode: 'date' }).notNull(),
+	},
+	(vt) => [
+		{
+			compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+		},
+	]
+);
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
