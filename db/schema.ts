@@ -9,6 +9,7 @@ import {
 	text,
 	timestamp,
 } from 'drizzle-orm/pg-core';
+import { v4 as uuidv4 } from 'uuid';
 
 // Enums
 export const difficultyEnum = pgEnum('difficulty_type', [
@@ -24,9 +25,13 @@ export const roleEnum = pgEnum('role_type', [
 
 // Users table
 export const users = pgTable('user', {
-	id: text('id').notNull().primaryKey(),
+	id: text('id')
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => uuidv4()),
+	name: text('name'),
 	email: text('email').notNull(),
-	emailVerified: timestamp('email_verified'),
+	emailVerified: timestamp('emailVerified'),
 	image: text('image'),
 	role: roleEnum('role').notNull().default('user'),
 	createdAt: timestamp('created_at').defaultNow(),
@@ -34,7 +39,10 @@ export const users = pgTable('user', {
 
 // Questions table
 export const questions = pgTable('question', {
-	id: text('id').primaryKey(),
+	id: text('id')
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => uuidv4()),
 	question: text('question').notNull(),
 	authorId: text('author_id')
 		.notNull()
@@ -48,7 +56,10 @@ export const questions = pgTable('question', {
 
 // Answers table
 export const answers = pgTable('answer', {
-	id: text('id').primaryKey(),
+	id: text('id')
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => uuidv4()),
 	answer: text('answer').notNull(),
 	isTrue: boolean('is_true').notNull(),
 	questionId: text('question_id').references(() => questions.id),
@@ -56,7 +67,10 @@ export const answers = pgTable('answer', {
 
 // Tags table
 export const tags = pgTable('tag', {
-	id: text('id').primaryKey(),
+	id: text('id')
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => uuidv4()),
 	tag: text('tag').notNull(),
 	questionId: text('question_id').references(() => questions.id),
 });

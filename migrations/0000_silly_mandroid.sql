@@ -46,8 +46,9 @@ CREATE TABLE "tag" (
 --> statement-breakpoint
 CREATE TABLE "user" (
 	"id" text PRIMARY KEY NOT NULL,
+	"name" text,
 	"email" text NOT NULL,
-	"email_verified" timestamp,
+	"emailVerified" timestamp,
 	"image" text,
 	"role" "role_type" DEFAULT 'user' NOT NULL,
 	"created_at" timestamp DEFAULT now()

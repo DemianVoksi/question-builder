@@ -1,3 +1,5 @@
+'use client';
+
 import { mockQuestions, mockQuestionsType } from '@/lib/mockQuestions';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';

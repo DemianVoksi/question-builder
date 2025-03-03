@@ -68,7 +68,7 @@ export type AllQuestionsQueryType = {
 	authorId: string;
 	submittedAt: Date | null;
 	approved: boolean | null;
-	approvedBy: number | null;
+	approvedBy: string | null;
 	answerId: string | null;
 	answerText: string | null;
 	answerIsCorrect: boolean | null;
@@ -84,7 +84,7 @@ export type StructuredQuestionType = {
 	authorId: string;
 	submittedAt: Date | null;
 	approved: boolean | null;
-	approvedBy: number | null;
+	approvedBy: string | null;
 	answers: {
 		id: string;
 		answer: string;
