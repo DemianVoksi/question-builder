@@ -5,6 +5,7 @@ import { db } from '@/db/drizzle';
 import { answers, questions, tags } from '@/db/schema';
 import { AllQuestionsQueryType, StructuredQuestionType } from '@/types/types';
 import { eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 
 function generateId() {
@@ -98,7 +99,9 @@ export async function addQuestion(
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
-	} else {
+	}
+
+	try {
 		const userId = session?.user?.id!;
 		const newQuestion = await db.insert(questions).values({
 			id: questionId,
@@ -110,7 +113,10 @@ export async function addQuestion(
 			approved: false,
 			approvedBy: null,
 		});
-		return newQuestion;
+		revalidatePath('/');
+		// return newQuestion;
+	} catch (error) {
+		throw new Error('Failed to add question');
 	}
 }
 
@@ -139,7 +145,7 @@ export async function editQuestion(
 				approvedBy: null,
 			})
 			.where(eq(questions.id, questionId));
-		return newQuestion;
+		// return newQuestion;
 	}
 }
 
@@ -152,7 +158,9 @@ export async function addAnswer(
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
-	} else {
+	}
+
+	try {
 		const userId = session?.user?.id!;
 		const newAnswer = await db.insert(answers).values({
 			id: generateId(),
@@ -160,7 +168,9 @@ export async function addAnswer(
 			isTrue: isTrue,
 			questionId: questionId,
 		});
-		return newAnswer;
+		// return newAnswer;
+	} catch (error) {
+		throw new Error('Failed to add answer');
 	}
 }
 
@@ -183,7 +193,7 @@ export async function editAnswer(
 				questionId: questionId,
 			})
 			.where(eq(answers.id, questionId));
-		return newAnswer;
+		// return newAnswer;
 	}
 }
 
@@ -192,14 +202,18 @@ export async function addTag(tag: string, questionId: string) {
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
-	} else {
+	}
+
+	try {
 		const userId = session?.user?.id!;
 		const newTag = await db.insert(tags).values({
 			id: generateId(),
 			tag: tag,
 			questionId: questionId,
 		});
-		return newTag;
+		// return newTag;
+	} catch (error) {
+		throw new Error('Failed to add tag');
 	}
 }
 
@@ -217,7 +231,7 @@ export async function editTag(tag: string, questionId: string) {
 				questionId: questionId,
 			})
 			.where(eq(tags.id, questionId));
-		return newTag;
+		// return newTag;
 	}
 }
 

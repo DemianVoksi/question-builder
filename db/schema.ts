@@ -125,18 +125,20 @@ export const verificationTokens = pgTable(
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
-	questions: many(questions),
-	approvedQuestions: many(questions),
+	questions: many(questions, { relationName: 'questionAuthor' }),
+	approvedQuestions: many(questions, { relationName: 'questionApprover' }),
 }));
 
 export const questionsRelations = relations(questions, ({ one, many }) => ({
 	author: one(users, {
 		fields: [questions.authorId],
 		references: [users.id],
+		relationName: 'questionAuthor',
 	}),
 	approvedBy: one(users, {
 		fields: [questions.approvedBy],
 		references: [users.id],
+		relationName: 'questionApprover',
 	}),
 	answers: many(answers),
 	tags: many(tags),

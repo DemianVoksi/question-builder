@@ -63,33 +63,50 @@ const NewQuestionForm = () => {
 		return uuid;
 	}
 
-	function processData(data: QuestionFormType) {
-		const questionId = generateId();
-		const correctAnswerChoice = data.correctAnswer.toString();
-		const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
-		const finalCorrect = data.answers[correctAnswerKey];
+	async function processData(data: QuestionFormType) {
+		try {
+			const questionId = generateId();
+			const correctAnswerChoice = data.correctAnswer.toString();
+			const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
+			const finalCorrect = data.answers[correctAnswerKey];
 
-		const isTrue = new Map();
-		for (const [key, value] of Object.entries(data.answers)) {
-			isTrue.set(key, value === correctAnswerKey ? true : false);
+			const isTrue = new Map();
+			for (const [key, value] of Object.entries(data.answers)) {
+				isTrue.set(key, value === correctAnswerKey ? true : false);
+			}
+
+			// add question
+			await addQuestion(
+				questionId,
+				data.question,
+				data.difficulty,
+				data.category
+			);
+
+			// add answers
+			for (const value of Object.values(data.answers)) {
+				console.log(
+					`Answer ${value} is: ${(value === finalCorrect).toString()}`
+				);
+				addAnswer(value, value === finalCorrect, questionId);
+				// const status = value === finalCorrect;
+				// console.log(status);
+			}
+
+			// add tags
+			// data.tags?.map((tag) => {
+			// 	console.log('Tag:', tag.tag);
+			// 	addTag(tag.tag, questionId);
+			// });
+			if (data.tags) {
+				for (const tag of data.tags) {
+					await addTag(tag.tag, questionId);
+				}
+			}
+			// form.reset();
+		} catch (error) {
+			console.error('Error submitting question:', error);
 		}
-
-		// add question
-		// addQuestion(questionId, data.question, data.difficulty, data.category);
-
-		// add answers
-		for (const value of Object.values(data.answers)) {
-			console.log(`Answer ${value} is: ${(value === finalCorrect).toString()}`);
-			// addAnswer(value, value === finalCorrect, questionId)
-			// const status = value === finalCorrect;
-			// console.log(status);
-		}
-
-		// add tags
-		data.tags?.map((tag) => {
-			console.log('Tag:', tag.tag);
-			//  addTag(tag.tag, questionId)
-		});
 
 		// console.log('Answers:', data.answers);
 		// console.log('Correct answer:', finalCorrect);
@@ -97,7 +114,6 @@ const NewQuestionForm = () => {
 		// console.log('Category:', data.category);
 		// console.log(isTrue);
 		// data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
-		revalidatePath('/');
 	}
 
 	function submitter(data: QuestionFormType) {
