@@ -20,7 +20,6 @@ function restructureQuestions(
 
 	data.forEach((row) => {
 		if (!questionMap.has(row.questionId)) {
-			// Initialize new question entry
 			questionMap.set(row.questionId, {
 				questionId: row.questionId,
 				questionText: row.questionText,
@@ -114,7 +113,6 @@ export async function addQuestion(
 			approvedBy: null,
 		});
 		revalidatePath('/');
-		// return newQuestion;
 	} catch (error) {
 		throw new Error('Failed to add question');
 	}
@@ -145,7 +143,6 @@ export async function editQuestion(
 				approvedBy: null,
 			})
 			.where(eq(questions.id, questionId));
-		// return newQuestion;
 	}
 }
 
@@ -168,7 +165,6 @@ export async function addAnswer(
 			isTrue: isTrue,
 			questionId: questionId,
 		});
-		// return newAnswer;
 	} catch (error) {
 		throw new Error('Failed to add answer');
 	}
@@ -193,7 +189,6 @@ export async function editAnswer(
 				questionId: questionId,
 			})
 			.where(eq(answers.id, questionId));
-		// return newAnswer;
 	}
 }
 
@@ -211,7 +206,6 @@ export async function addTag(tag: string, questionId: string) {
 			tag: tag,
 			questionId: questionId,
 		});
-		// return newTag;
 	} catch (error) {
 		throw new Error('Failed to add tag');
 	}
@@ -231,7 +225,6 @@ export async function editTag(tag: string, questionId: string) {
 				questionId: questionId,
 			})
 			.where(eq(tags.id, questionId));
-		// return newTag;
 	}
 }
 

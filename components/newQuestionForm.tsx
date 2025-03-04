@@ -89,15 +89,9 @@ const NewQuestionForm = () => {
 					`Answer ${value} is: ${(value === finalCorrect).toString()}`
 				);
 				addAnswer(value, value === finalCorrect, questionId);
-				// const status = value === finalCorrect;
-				// console.log(status);
 			}
 
 			// add tags
-			// data.tags?.map((tag) => {
-			// 	console.log('Tag:', tag.tag);
-			// 	addTag(tag.tag, questionId);
-			// });
 			if (data.tags) {
 				for (const tag of data.tags) {
 					await addTag(tag.tag, questionId);
@@ -107,13 +101,6 @@ const NewQuestionForm = () => {
 		} catch (error) {
 			console.error('Error submitting question:', error);
 		}
-
-		// console.log('Answers:', data.answers);
-		// console.log('Correct answer:', finalCorrect);
-		// console.log('Difficulty:', data.difficulty);
-		// console.log('Category:', data.category);
-		// console.log(isTrue);
-		// data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
 	}
 
 	function submitter(data: QuestionFormType) {
