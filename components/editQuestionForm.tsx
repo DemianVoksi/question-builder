@@ -36,6 +36,8 @@ import {
 } from './ui/form';
 import { Switch } from './ui/switch';
 
+// change props from mockQuestion to fetched Question
+
 const EditQuestionForm = (props: mockQuestionsType) => {
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),

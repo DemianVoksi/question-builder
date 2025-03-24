@@ -13,6 +13,8 @@ const QuestionsListWrapper = () => {
 	const categoryPar = searchParams.get('category')?.toLowerCase();
 	const questionPar = searchParams.get('question')?.toLowerCase() ?? '';
 
+	// fetch the questions
+
 	const filteredQuestions: mockQuestionsType[] = mockQuestions.filter((mq) => {
 		let matches = true;
 		if (questionPar) {
