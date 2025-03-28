@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider';
+import { ContextProvider } from '@/lib/contextProvider';
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -38,14 +39,16 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${lato.variable} antialiased`}
 			>
-				<ThemeProvider
-					attribute='class'
-					defaultTheme='system'
-					enableSystem
-					disableTransitionOnChange
-				>
-					{children}
-				</ThemeProvider>
+				<ContextProvider>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='system'
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+					</ThemeProvider>
+				</ContextProvider>
 			</body>
 		</html>
 	);
