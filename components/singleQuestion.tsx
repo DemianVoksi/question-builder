@@ -1,5 +1,6 @@
 import { deleteQuestion } from '@/db/actions';
 import { mockQuestionsType } from '@/lib/mockQuestions';
+import { StructuredQuestionType } from '@/types/types';
 import { time } from 'console';
 import React from 'react';
 import EditQuestionForm from './editQuestionForm';
@@ -11,31 +12,22 @@ import {
 } from './ui/accordion';
 import { Button } from './ui/button';
 
+interface SingleQuestionProps extends StructuredQuestionType {}
+
 const SingleQuestion = ({
-	question,
-	answer1,
-	answer2,
-	answer3,
-	answer4,
-	correctAnswer,
-	tags,
-	tag1,
-	tag2,
-	tag3,
-	tag4,
-	tag5,
-	tag6,
-	tag7,
+	questionId,
+	questionText,
 	difficulty,
 	category,
-	id,
-	author,
-	timeSubmitted,
+	authorId,
+	submittedAt,
 	approved,
 	approvedBy,
-}: mockQuestionsType) => {
-	function handleAnswerColor(answer: string) {
-		if (correctAnswer === answer) {
+	answers,
+	tags,
+}: SingleQuestionProps) => {
+	function handleAnswerColor(answerTrue: boolean) {
+		if (answerTrue) {
 			return 'text-green-700';
 		} else {
 			return 'text-red-700';
@@ -54,17 +46,20 @@ const SingleQuestion = ({
 		}
 	}
 
+	const correctAnswer = answers.filter((answer) => {
+		answer.isTrue === true;
+	});
+
 	async function handleDeleteQuestion() {
 		// await deleteQuestion(id);
 	}
 
-	function parseTimeSubmitted(timeSubmitted: string) {
-		const date = new Date(timeSubmitted);
-		const day = String(date.getDate()).padStart(2, '0');
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const year = date.getFullYear();
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
+	function parseTimeSubmitted(timeSubmitted: Date) {
+		const day = String(timeSubmitted.getDate()).padStart(2, '0');
+		const month = String(timeSubmitted.getMonth() + 1).padStart(2, '0');
+		const year = timeSubmitted.getFullYear();
+		const hours = String(timeSubmitted.getHours()).padStart(2, '0');
+		const minutes = String(timeSubmitted.getMinutes()).padStart(2, '0');
 
 		return `${day}.${month}.${year} ${hours}:${minutes}`;
 	}
@@ -76,16 +71,17 @@ const SingleQuestion = ({
 				collapsible
 				className='w-[100%] border border-zinc-200 rounded-md px-2'
 			>
-				<AccordionItem value={id.toString()} className='w-full'>
+				<AccordionItem value={questionId.toString()} className='w-full'>
 					<AccordionTrigger className='flex flex-row justify-between w-full'>
-						<p className='text-left w-full'>{question}</p>
+						<p className='text-left w-full'>{questionText}</p>
 					</AccordionTrigger>
 					<AccordionContent className='w-full flex flex-row'>
 						<div className='flex flex-col gap-2 border-r border-zinc-200 px-3'>
-							<p className={handleAnswerColor(answer1)}>1. {answer1}</p>
-							<p className={handleAnswerColor(answer2)}>2. {answer2}</p>
-							<p className={handleAnswerColor(answer3)}>3. {answer3}</p>
-							<p className={handleAnswerColor(answer4)}>4. {answer4}</p>
+							{answers.map((answer, index) => (
+								<p className={handleAnswerColor(answer.isTrue)} key={index}>
+									{index + 1}. {answer.answer}
+								</p>
+							))}
 						</div>
 						<div className='flex flex-col gap-2 border-r border-zinc-200 px-3'>
 							<div className='flex flex-row'>
@@ -95,8 +91,10 @@ const SingleQuestion = ({
 								</p>
 							</div>
 							<div>Category: {category}</div>
-							<div>Author: {author}</div>
-							<div>Submitted at: {parseTimeSubmitted(timeSubmitted)}</div>
+							<div>Author: {authorId}</div>
+							<div>
+								Submitted at: {submittedAt && parseTimeSubmitted(submittedAt)}
+							</div>
 						</div>
 						<div className='flex flex-col gap-2 w-[20%] border-r border-zinc-200 px-3'>
 							<p className='flex w-full justify-center'>Tags: </p>
@@ -118,20 +116,16 @@ const SingleQuestion = ({
 						<div className='flex flex-1 flex-col justify-end items-end pr-2 space-y-2'>
 							<div>
 								<EditQuestionForm
-									question={question}
-									answer1={answer1}
-									answer2={answer2}
-									answer3={answer3}
-									answer4={answer4}
-									correctAnswer={correctAnswer}
-									tags={tags}
-									category={category}
+									questionId={questionId}
+									questionText={questionText}
 									difficulty={difficulty}
-									author={author}
-									id={id}
-									timeSubmitted={timeSubmitted}
+									category={category}
+									authorId={authorId}
+									submittedAt={submittedAt}
 									approved={approved}
 									approvedBy={approvedBy}
+									answers={answers}
+									tags={tags}
 								/>
 							</div>
 							<Button variant='danger'>Delete Question</Button>

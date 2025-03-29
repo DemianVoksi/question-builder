@@ -1,11 +1,19 @@
 'use client';
 
-import { mockQuestions, mockQuestionsType } from '@/lib/mockQuestions';
+import { fetchQuestions } from '@/db/actions';
+import { useStateContext } from '@/lib/contextProvider';
+import { StructuredQuestionType } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import SingleQuestion from './singleQuestion';
 
 const QuestionsListWrapper = () => {
+	const {
+		allQuestions,
+		setAllQuestions,
+		filteredQuestions,
+		setFilteredQuestions,
+	} = useStateContext();
 	const searchParams = useSearchParams();
 	const searchPar = searchParams.get('search')?.toLowerCase();
 	const difficultyPar = searchParams.get('difficulty')?.toLowerCase();
@@ -13,48 +21,51 @@ const QuestionsListWrapper = () => {
 	const categoryPar = searchParams.get('category')?.toLowerCase();
 	const questionPar = searchParams.get('question')?.toLowerCase() ?? '';
 
-	// fetch the questions
+	useEffect(() => {
+		const getQuestions = async () => {
+			try {
+				const questions = await fetchQuestions();
+				setAllQuestions(questions);
+			} catch (error) {
+				console.error('Error fetching questions:', error);
+			}
+		};
+		getQuestions();
+	}, []);
 
-	const filteredQuestions: mockQuestionsType[] = mockQuestions.filter((mq) => {
-		let matches = true;
-		if (questionPar) {
-			matches =
-				matches &&
-				mq.question.toLowerCase().includes(questionPar.toLowerCase());
-		}
+	useEffect(() => {
+		if (!allQuestions) return;
 
-		// if (searchPar) {
-		// 	const searchMatch =
-		// 		mq.question.toLowerCase().includes(searchPar.toLowerCase()) ||
-		// 		mq.answer1.toLowerCase().includes(searchPar.toLowerCase()) ||
-		// 		mq.answer2.toLowerCase().includes(searchPar.toLowerCase()) ||
-		// 		mq.answer3.toLowerCase().includes(searchPar.toLowerCase()) ||
-		// 		mq.answer4.toLowerCase().includes(searchPar.toLowerCase());
-		// 	matches = matches && searchMatch;
-		// }
-		if (difficultyPar && difficultyPar !== 'all') {
-			matches =
-				matches && mq.difficulty.toLowerCase() === difficultyPar.toLowerCase();
-		}
-		if (approvedPar && approvedPar !== 'all') {
-			matches =
-				matches && mq.approved === (approvedPar?.toLowerCase() === 'true');
-		}
-		if (categoryPar && categoryPar !== 'all') {
-			matches =
-				matches &&
-				mq.tags.some((tag) =>
-					tag.toLowerCase().includes(categoryPar.toLowerCase())
-				);
-		}
-		return matches;
-	});
+		const filtered = allQuestions.filter((question) => {
+			let matches = true;
+
+			if (questionPar) {
+				matches =
+					matches && question.questionText.toLowerCase().includes(questionPar);
+			}
+			if (difficultyPar && difficultyPar !== 'all') {
+				matches =
+					matches && question.difficulty.toLowerCase() === difficultyPar;
+			}
+			if (approvedPar && approvedPar !== 'all') {
+				matches = matches && question.approved === (approvedPar === 'true');
+			}
+			if (categoryPar && categoryPar !== 'all') {
+				matches = matches && question.category.toLowerCase() === categoryPar;
+			}
+			return matches;
+		});
+
+		setFilteredQuestions(filtered);
+	}, [allQuestions, questionPar, difficultyPar, approvedPar, categoryPar]);
+
+	if (!filteredQuestions) return <div>Loading questions...</div>;
 
 	return (
 		<div className='h-full overflow-y-auto px-4 mt-2'>
 			<div className='space-y-1 pb-4'>
-				{filteredQuestions.map((question) => (
-					<SingleQuestion key={question.id} {...question} />
+				{filteredQuestions!.map((question) => (
+					<SingleQuestion key={question.questionId} {...question} />
 				))}
 			</div>
 		</div>

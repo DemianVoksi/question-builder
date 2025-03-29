@@ -20,7 +20,11 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { mockQuestionsType } from '@/lib/mockQuestions';
-import { QuestionFormSchema, QuestionFormType } from '@/types/types';
+import {
+	QuestionFormSchema,
+	QuestionFormType,
+	StructuredQuestionType,
+} from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import React from 'react';
@@ -38,30 +42,30 @@ import { Switch } from './ui/switch';
 
 // change props from mockQuestion to fetched Question
 
-const EditQuestionForm = (props: mockQuestionsType) => {
+const EditQuestionForm = (props: StructuredQuestionType) => {
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
 		defaultValues: {
-			question: props.question,
+			question: props.questionText,
 			answers: {
-				choice1: props.answer1,
-				choice2: props.answer2,
-				choice3: props.answer3,
-				choice4: props.answer4,
+				choice1: props.answers[0].answer,
+				choice2: props.answers[1].answer,
+				choice3: props.answers[2].answer,
+				choice4: props.answers[3].answer,
 			},
 			correctAnswer: getCorrectAnswerChoice(props),
 			difficulty: props.difficulty as 'easy' | 'medium' | 'hard',
 			category: props.category,
 			tags: props.tags.map((tag) => ({ tag })),
-			approved: props.approved,
+			approved: props.approved!,
 		},
 	});
 
-	function getCorrectAnswerChoice(props: mockQuestionsType) {
-		if (props.correctAnswer === props.answer1) return 'choice1';
-		if (props.correctAnswer === props.answer2) return 'choice2';
-		if (props.correctAnswer === props.answer3) return 'choice3';
-		if (props.correctAnswer === props.answer4) return 'choice4';
+	function getCorrectAnswerChoice(props: StructuredQuestionType) {
+		if (props.answers[0].isTrue) return 'choice1';
+		if (props.answers[1].isTrue) return 'choice2';
+		if (props.answers[2].isTrue) return 'choice3';
+		if (props.answers[3].isTrue) return 'choice4';
 	}
 
 	const { fields, append, remove } = useFieldArray({
