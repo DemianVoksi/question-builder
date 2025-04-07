@@ -19,7 +19,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { addAnswer, addQuestion, addTag } from '@/db/actions';
+import { addAnswer, addQuestion, addTag, fetchQuestions } from '@/db/actions';
+import { useStateContext } from '@/lib/contextProvider';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
@@ -39,6 +40,7 @@ import {
 
 const NewQuestionForm = () => {
 	const [open, setOpen] = useState(false);
+	const { setFilteredQuestions } = useStateContext();
 
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
@@ -101,6 +103,8 @@ const NewQuestionForm = () => {
 			}
 			// form.reset();
 			setOpen(false);
+			const newQuestions = await fetchQuestions();
+			setFilteredQuestions(newQuestions);
 		} catch (error) {
 			console.error('Error submitting question:', error);
 		}

@@ -19,7 +19,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { editQuestion } from '@/db/actions';
+import { editQuestion, fetchQuestions } from '@/db/actions';
+import { useStateContext } from '@/lib/contextProvider';
 import { mockQuestionsType } from '@/lib/mockQuestions';
 import {
 	QuestionFormSchema,
@@ -45,6 +46,7 @@ import { Switch } from './ui/switch';
 
 const EditQuestionForm = (props: StructuredQuestionType) => {
 	const [open, setOpen] = useState(false);
+	const { setFilteredQuestions } = useStateContext();
 
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
@@ -106,6 +108,8 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 				data.approvedBy ?? null
 			);
 			setOpen(false);
+			const newQuestions = await fetchQuestions();
+			setFilteredQuestions(newQuestions);
 		} catch (error) {
 			console.error('Error editing question:', error);
 		}
