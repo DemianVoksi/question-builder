@@ -19,6 +19,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { editQuestion } from '@/db/actions';
 import { mockQuestionsType } from '@/lib/mockQuestions';
 import {
 	QuestionFormSchema,
@@ -27,7 +28,7 @@ import {
 } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import React from 'react';
+import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Checkbox } from './ui/checkbox';
 import {
@@ -43,6 +44,8 @@ import { Switch } from './ui/switch';
 // change props from mockQuestion to fetched Question
 
 const EditQuestionForm = (props: StructuredQuestionType) => {
+	const [open, setOpen] = useState(false);
+
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
 		defaultValues: {
@@ -75,30 +78,44 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 
 	const onInvalid = (errors: any) => console.error(errors);
 
-	function processData(data: QuestionFormType) {
-		const correctAnswerChoice = data.correctAnswer.toString();
-		const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
-		const finalCorrect = data.answers[correctAnswerKey];
+	async function processData(data: QuestionFormType) {
+		try {
+			const correctAnswerChoice = data.correctAnswer.toString();
+			const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
+			const finalCorrect = data.answers[correctAnswerKey];
 
-		const isTrue = new Map();
-		for (const [key, value] of Object.entries(data.answers)) {
-			isTrue.set(key, value === correctAnswerKey ? true : false);
+			const isTrue = new Map();
+			for (const [key, value] of Object.entries(data.answers)) {
+				isTrue.set(key, value === correctAnswerKey ? true : false);
+			}
+
+			console.log('Question;', data.question);
+			console.log('Answers:', data.answers);
+			console.log('Correct answer:', finalCorrect);
+			console.log('Difficulty:', data.difficulty);
+			console.log('Category:', data.category);
+			console.log('Approved:', data.approved);
+			data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
+
+			await editQuestion(
+				props.questionId,
+				data.question,
+				data.difficulty,
+				data.category,
+				data.approved ?? null,
+				data.approvedBy ?? null
+			);
+			setOpen(false);
+		} catch (error) {
+			console.error('Error editing question:', error);
 		}
-
-		console.log('Answers:', data.answers);
-		console.log('Correct answer:', finalCorrect);
-		console.log('Difficulty:', data.difficulty);
-		console.log('Category:', data.category);
-		console.log('Approved:', data.approved);
-
-		data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
 	}
 
 	function submitter(data: QuestionFormType) {
 		processData(data);
 	}
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button variant='success' className='font-lato'>
 					Edit question

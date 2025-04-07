@@ -122,13 +122,17 @@ export async function editQuestion(
 	questionId: string,
 	question: string,
 	difficulty: 'easy' | 'medium' | 'hard',
-	category: string
+	category: string,
+	approved: boolean | null,
+	approvedBy: string | null
 ) {
 	const session = await auth();
 
 	if (!session?.user?.id) {
 		throw new Error('User not found');
-	} else {
+	}
+
+	try {
 		const userId = session?.user?.id!;
 		const newQuestion = await db
 			.update(questions)
@@ -139,10 +143,13 @@ export async function editQuestion(
 				submittedAt: new Date(),
 				difficulty: difficulty,
 				category: category,
-				approved: false,
-				approvedBy: null,
+				approved: approved,
+				approvedBy: approvedBy,
 			})
 			.where(eq(questions.id, questionId));
+		revalidatePath('/');
+	} catch (error) {
+		throw new Error('Failed to edit question');
 	}
 }
 

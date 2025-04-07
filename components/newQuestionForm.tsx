@@ -24,7 +24,7 @@ import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { revalidatePath } from 'next/cache';
-import React from 'react';
+import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { Checkbox } from './ui/checkbox';
@@ -38,6 +38,8 @@ import {
 } from './ui/form';
 
 const NewQuestionForm = () => {
+	const [open, setOpen] = useState(false);
+
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
 		defaultValues: {
@@ -98,6 +100,7 @@ const NewQuestionForm = () => {
 				}
 			}
 			// form.reset();
+			setOpen(false);
 		} catch (error) {
 			console.error('Error submitting question:', error);
 		}
@@ -108,7 +111,7 @@ const NewQuestionForm = () => {
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button variant='success' className='font-lato'>
 					Add question
