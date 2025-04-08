@@ -244,8 +244,9 @@ export async function deleteQuestion(id: string) {
 	if (!session?.user?.id) {
 		throw new Error('User not found');
 	} else {
-		await db.delete(questions).where(eq(questions.id, id));
-		await db.delete(answers).where(eq(answers.questionId, id));
 		await db.delete(tags).where(eq(tags.questionId, id));
+		await db.delete(answers).where(eq(answers.questionId, id));
+		await db.delete(questions).where(eq(questions.id, id));
+		revalidatePath('/');
 	}
 }

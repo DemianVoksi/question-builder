@@ -1,4 +1,5 @@
-import { deleteQuestion } from '@/db/actions';
+import { deleteQuestion, fetchQuestions } from '@/db/actions';
+import { useStateContext } from '@/lib/contextProvider';
 import { mockQuestionsType } from '@/lib/mockQuestions';
 import { StructuredQuestionType } from '@/types/types';
 import { time } from 'console';
@@ -27,6 +28,8 @@ const SingleQuestion = ({
 	answers,
 	tags,
 }: SingleQuestionProps) => {
+	const { setFilteredQuestions } = useStateContext();
+
 	function handleAnswerColor(answerTrue: boolean) {
 		if (answerTrue) {
 			return 'text-green-700';
@@ -51,8 +54,14 @@ const SingleQuestion = ({
 		answer.isTrue === true;
 	});
 
-	async function handleDeleteQuestion() {
-		// await deleteQuestion(id);
+	async function handleDeleteQuestion(questionId: string) {
+		try {
+			await deleteQuestion(questionId);
+			const questions = await fetchQuestions();
+			setFilteredQuestions(questions);
+		} catch (error) {
+			console.error('Error deleting question:', error);
+		}
 	}
 
 	function parseTimeSubmitted(timeSubmitted: Date) {
@@ -130,7 +139,12 @@ const SingleQuestion = ({
 									tags={tags}
 								/>
 							</div>
-							<Button variant='danger'>Delete Question</Button>
+							<Button
+								variant='danger'
+								onClick={() => handleDeleteQuestion(questionId)}
+							>
+								Delete Question
+							</Button>
 						</div>
 					</AccordionContent>
 				</AccordionItem>
