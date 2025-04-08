@@ -67,6 +67,7 @@ export type AllQuestionsQueryType = {
 	difficulty: 'easy' | 'medium' | 'hard';
 	category: string;
 	authorId: string;
+	authorEmail: string;
 	submittedAt: Date | null;
 	approved: boolean | null;
 	approvedBy: string | null;
@@ -83,6 +84,7 @@ export type StructuredQuestionType = {
 	difficulty: 'easy' | 'medium' | 'hard';
 	category: string;
 	authorId: string;
+	authorEmail: string;
 	submittedAt: Date | null;
 	approved: boolean | null;
 	approvedBy: string | null;

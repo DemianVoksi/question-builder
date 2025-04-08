@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth';
 import { db } from '@/db/drizzle';
-import { answers, questions, tags } from '@/db/schema';
+import { answers, questions, tags, users } from '@/db/schema';
 import { AllQuestionsQueryType, StructuredQuestionType } from '@/types/types';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
@@ -26,6 +26,7 @@ function restructureQuestions(
 				difficulty: row.difficulty,
 				category: row.category,
 				authorId: row.authorId,
+				authorEmail: row.authorEmail,
 				submittedAt: row.submittedAt,
 				approved: row.approved,
 				approvedBy: row.approvedBy,
@@ -68,6 +69,7 @@ export async function fetchQuestions() {
 				difficulty: questions.difficulty,
 				category: questions.category,
 				authorId: questions.authorId,
+				authorEmail: users.email,
 				submittedAt: questions.submittedAt,
 				approved: questions.approved,
 				approvedBy: questions.approvedBy,
@@ -81,7 +83,8 @@ export async function fetchQuestions() {
 			})
 			.from(questions)
 			.leftJoin(answers, eq(questions.id, answers.questionId))
-			.leftJoin(tags, eq(questions.id, tags.questionId));
+			.leftJoin(tags, eq(questions.id, tags.questionId))
+			.innerJoin(users, eq(questions.authorId, users.id));
 
 		const finalFetched = restructureQuestions(allQuestionsQuery);
 		return finalFetched;

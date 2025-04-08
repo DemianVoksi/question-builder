@@ -20,6 +20,7 @@ const SingleQuestion = ({
 	difficulty,
 	category,
 	authorId,
+	authorEmail,
 	submittedAt,
 	approved,
 	approvedBy,
@@ -91,7 +92,7 @@ const SingleQuestion = ({
 								</p>
 							</div>
 							<div>Category: {category}</div>
-							<div>Author: {authorId}</div>
+							<div>Author: {authorEmail}</div>
 							<div>
 								Submitted at: {submittedAt && parseTimeSubmitted(submittedAt)}
 							</div>
@@ -121,6 +122,7 @@ const SingleQuestion = ({
 									difficulty={difficulty}
 									category={category}
 									authorId={authorId}
+									authorEmail={authorEmail}
 									submittedAt={submittedAt}
 									approved={approved}
 									approvedBy={approvedBy}
