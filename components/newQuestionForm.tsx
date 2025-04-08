@@ -129,12 +129,15 @@ const NewQuestionForm = () => {
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(submitter, onInvalid)}>
+					<form
+						onSubmit={form.handleSubmit(submitter, onInvalid)}
+						className='flex flex-col h-[calc(100%-70px)]'
+					>
 						{/*
 						Question and answers
 						*/}
-						<div className='flex flex-row'>
-							<div className='flex flex-col w-[50%] space-y-3 mb-4'>
+						<div className='flex-1 flex flex-row overflow-hidden'>
+							<div className='flex flex-col w-[50%] space-y-3 overflow-y-auto px-4'>
 								<FormField
 									control={form.control}
 									name='question'
