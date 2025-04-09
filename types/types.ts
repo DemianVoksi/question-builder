@@ -46,13 +46,6 @@ export type QuestionAnswersTagsType = {
 	correctAnswer: string;
 	category: string;
 	tags: string[];
-	// tag1?: string;
-	// tag2?: string;
-	// tag3?: string;
-	// tag4?: string;
-	// tag5?: string;
-	// tag6?: string;
-	// tag7?: string;
 	difficulty: string;
 	id: string;
 	author: string;

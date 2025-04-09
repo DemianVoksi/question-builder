@@ -5,7 +5,6 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
@@ -21,7 +20,6 @@ import {
 } from '@/components/ui/select';
 import { editQuestion, fetchQuestions } from '@/db/actions';
 import { useStateContext } from '@/lib/contextProvider';
-import { mockQuestionsType } from '@/lib/mockQuestions';
 import {
 	QuestionFormSchema,
 	QuestionFormType,
@@ -41,8 +39,6 @@ import {
 	FormMessage,
 } from './ui/form';
 import { Switch } from './ui/switch';
-
-// change props from mockQuestion to fetched Question
 
 const EditQuestionForm = (props: StructuredQuestionType) => {
 	const [open, setOpen] = useState(false);
@@ -134,9 +130,6 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(submitter, onInvalid)}>
-						{/*
-						Question and answers
-						*/}
 						<div className='flex flex-row'>
 							<div className='flex flex-col w-[50%] space-y-3 mb-4'>
 								<FormField
@@ -284,10 +277,6 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 									/>
 								</div>
 							</div>
-							{/*
-						Correct answer checkbox
-						*/}
-
 							<div className='w-[50%]'>
 								<FormField
 									key='category'
@@ -392,11 +381,6 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 								</div>
 							</div>
 						</div>
-
-						{/*
-            add switch to toggle approved status
-            */}
-
 						<div className='flex justify-center mt-4'>
 							<Button type='submit' variant='black'>
 								Edit question

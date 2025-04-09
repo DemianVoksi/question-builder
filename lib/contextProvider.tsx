@@ -42,7 +42,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
 export const useStateContext = (): ContextType => {
 	const context = useContext(StateContext);
 	if (!context) {
-		throw new Error('useGlobalState must be used within a GlobalStateProvider');
+		throw new Error('StateContext must be used within a StateContext Provider');
 	}
 	return context;
 };

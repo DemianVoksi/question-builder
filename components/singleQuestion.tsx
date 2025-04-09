@@ -1,8 +1,6 @@
 import { deleteQuestion, fetchQuestions } from '@/db/actions';
 import { useStateContext } from '@/lib/contextProvider';
-import { mockQuestionsType } from '@/lib/mockQuestions';
 import { StructuredQuestionType } from '@/types/types';
-import { time } from 'console';
 import React from 'react';
 import EditQuestionForm from './editQuestionForm';
 import {

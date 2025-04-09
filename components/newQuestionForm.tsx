@@ -5,7 +5,6 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
@@ -24,7 +23,6 @@ import { useStateContext } from '@/lib/contextProvider';
 import { QuestionFormSchema, QuestionFormType } from '@/types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { revalidatePath } from 'next/cache';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -133,9 +131,6 @@ const NewQuestionForm = () => {
 						onSubmit={form.handleSubmit(submitter, onInvalid)}
 						className='flex flex-col h-[calc(100%-70px)]'
 					>
-						{/*
-						Question and answers
-						*/}
 						<div className='flex-1 flex flex-row overflow-hidden'>
 							<div className='flex flex-col w-[50%] space-y-3 overflow-y-auto px-4'>
 								<FormField
@@ -264,10 +259,7 @@ const NewQuestionForm = () => {
 											<FormItem>
 												<FormLabel>Difficulty:</FormLabel>
 												<FormControl>
-													<RadioGroup
-														onValueChange={field.onChange}
-														// defaultValue={field.value}
-													>
+													<RadioGroup onValueChange={field.onChange}>
 														<div className='flex items-center space-x-2'>
 															<RadioGroupItem value='easy' id='easy' />
 															<Label htmlFor='easy'>Easy</Label>
@@ -287,10 +279,6 @@ const NewQuestionForm = () => {
 									/>
 								</div>
 							</div>
-							{/*
-						Correct answer checkbox
-						*/}
-
 							<div className='w-[50%]'>
 								<FormField
 									key='category'
@@ -374,14 +362,6 @@ const NewQuestionForm = () => {
 								</div>
 							</div>
 						</div>
-
-						{/*
-						Tags
-						*/}
-
-						{/*
-						Category select
-						*/}
 						<div className='flex justify-center mt-4'>
 							<Button type='submit' variant='black'>
 								Submit

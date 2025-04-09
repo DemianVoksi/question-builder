@@ -2,9 +2,8 @@
 
 import { fetchQuestions } from '@/db/actions';
 import { useStateContext } from '@/lib/contextProvider';
-import { StructuredQuestionType } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import SingleQuestion from './singleQuestion';
 
 const QuestionsListWrapper = () => {
