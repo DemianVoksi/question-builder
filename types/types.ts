@@ -2,12 +2,23 @@ import z from 'zod';
 
 export const QuestionFormSchema = z.object({
 	question: z.string().min(1),
-	answers: z.object({
-		choice1: z.string().min(1, 'Choice 1 is required'),
-		choice2: z.string().min(1, 'Choice 2 is required'),
-		choice3: z.string().min(1, 'Choice 3 is required'),
-		choice4: z.string().min(1, 'Choice 4 is required'),
-	}),
+	answers: z
+		.object({
+			choice1: z.string().min(1, 'Choice 1 is required'),
+			choice2: z.string().min(1, 'Choice 2 is required'),
+			choice3: z.string().min(1, 'Choice 3 is required'),
+			choice4: z.string().min(1, 'Choice 4 is required'),
+		})
+		.superRefine((val, ctx) => {
+			const choicesSet = new Set(Object.values(val));
+			if (choicesSet.size != 4) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `Answers must be unique.`,
+					path: ['answers'],
+				});
+			}
+		}),
 	correctAnswer: z.enum(['choice1', 'choice2', 'choice3', 'choice4'], {
 		message: 'You must select a correct answer',
 	}),

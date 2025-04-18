@@ -150,74 +150,96 @@ const NewQuestionForm = () => {
 										</FormItem>
 									)}
 								/>
+								{/*
+									
+								*/}
+
 								<FormField
 									control={form.control}
-									name='answers.choice1'
-									render={({ field }) => (
-										<FormItem className='flex flex-col items-start justify-center mb-1'>
-											<FormLabel>Answer 1:</FormLabel>
-											<FormControl>
-												<Input
-													placeholder='Answer 1'
-													{...field}
-													className='w-[75%]'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
+									name='answers'
+									render={(field) => (
+										<>
+											<FormField
+												control={form.control}
+												name='answers.choice1'
+												render={({ field }) => (
+													<FormItem className='flex flex-col items-start justify-center mb-1'>
+														<FormLabel>Answer 1:</FormLabel>
+														<FormControl>
+															<Input
+																placeholder='Answer 1'
+																{...field}
+																className='w-[75%]'
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={form.control}
+												name='answers.choice2'
+												render={({ field }) => (
+													<FormItem className='flex flex-col items-start justify-center mb-1'>
+														<FormLabel>Answer 2:</FormLabel>
+														<FormControl>
+															<Input
+																placeholder='Answer 2'
+																{...field}
+																className='w-[75%]'
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={form.control}
+												name='answers.choice3'
+												render={({ field }) => (
+													<FormItem className='flex flex-col items-start justify-center mb-1'>
+														<FormLabel>Answer 3:</FormLabel>
+														<FormControl>
+															<Input
+																placeholder='Answer 3'
+																{...field}
+																className='w-[75%]'
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={form.control}
+												name='answers.choice4'
+												render={({ field }) => (
+													<FormItem className='flex flex-col items-start justify-center'>
+														<FormLabel>Answer 4:</FormLabel>
+														<FormControl>
+															<Input
+																placeholder='Answer 4'
+																{...field}
+																className='w-[75%]'
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											{(form.formState.errors.answers as any)?.answers
+												?.message && (
+												<p className='text-red-600 text-sm mt-1'>
+													{
+														(form.formState.errors.answers as any).answers
+															.message
+													}
+												</p>
+											)}
+										</>
 									)}
 								/>
-								<FormField
-									control={form.control}
-									name='answers.choice2'
-									render={({ field }) => (
-										<FormItem className='flex flex-col items-start justify-center mb-1'>
-											<FormLabel>Answer 2:</FormLabel>
-											<FormControl>
-												<Input
-													placeholder='Answer 2'
-													{...field}
-													className='w-[75%]'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<FormField
-									control={form.control}
-									name='answers.choice3'
-									render={({ field }) => (
-										<FormItem className='flex flex-col items-start justify-center mb-1'>
-											<FormLabel>Answer 3:</FormLabel>
-											<FormControl>
-												<Input
-													placeholder='Answer 3'
-													{...field}
-													className='w-[75%]'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<FormField
-									control={form.control}
-									name='answers.choice4'
-									render={({ field }) => (
-										<FormItem className='flex flex-col items-start justify-center'>
-											<FormLabel>Answer 4:</FormLabel>
-											<FormControl>
-												<Input
-													placeholder='Answer 4'
-													{...field}
-													className='w-[75%]'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
+
 								<div className='flex flex-col space-x-2 pt-2'>
 									<Label className='mb-2'>Choose correct answer:</Label>
 									{['choice1', 'choice2', 'choice3', 'choice4'].map(
