@@ -99,10 +99,10 @@ const NewQuestionForm = () => {
 					await addTag(tag.tag, questionId);
 				}
 			}
-			// form.reset();
 			setOpen(false);
 			const newQuestions = await fetchQuestions();
 			setFilteredQuestions(newQuestions);
+			form.reset();
 		} catch (error) {
 			console.error('Error submitting question:', error);
 		}
