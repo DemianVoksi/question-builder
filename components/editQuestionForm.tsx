@@ -87,13 +87,15 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 				isTrue.set(key, value === correctAnswerKey ? true : false);
 			}
 
-			console.log('Question;', data.question);
-			console.log('Answers:', data.answers);
-			console.log('Correct answer:', finalCorrect);
-			console.log('Difficulty:', data.difficulty);
-			console.log('Category:', data.category);
-			console.log('Approved:', data.approved);
-			data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
+			// console.log('Question;', data.question);
+			// console.log('Answers:', data.answers);
+			// console.log('Correct answer:', finalCorrect);
+			// console.log('Difficulty:', data.difficulty);
+			// console.log('Category:', data.category);
+			// console.log('Approved:', data.approved);
+			// data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
+
+			const approvedBy = data.approvedBy || null;
 
 			await editQuestion(
 				props.questionId,
@@ -101,7 +103,7 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 				data.difficulty,
 				data.category,
 				data.approved ?? null,
-				data.approvedBy ?? null
+				approvedBy
 			);
 			setOpen(false);
 			const newQuestions = await fetchQuestions();

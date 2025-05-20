@@ -1,6 +1,6 @@
 {
-  "id": "8cf3b283-04ad-4606-9689-6236f5e17c7c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "8d3cd8ca-c660-4d8e-a11b-ba4cbbec7da1",
+  "prevId": "8cf3b283-04ad-4606-9689-6236f5e17c7c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -194,7 +194,7 @@
           "name": "approved",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": false
         },
         "approved_by": {

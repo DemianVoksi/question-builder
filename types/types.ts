@@ -31,7 +31,7 @@ export const QuestionFormSchema = z.object({
 		.max(7),
 	difficulty: z.enum(['easy', 'medium', 'hard']),
 	category: z.string().min(1),
-	approved: z.boolean().optional(),
+	approved: z.boolean(),
 	approvedBy: z.string().optional(),
 });
 
@@ -73,7 +73,7 @@ export type AllQuestionsQueryType = {
 	authorId: string;
 	authorEmail: string;
 	submittedAt: Date | null;
-	approved: boolean | null;
+	approved: boolean;
 	approvedBy: string | null;
 	answerId: string | null;
 	answerText: string | null;
@@ -90,7 +90,7 @@ export type StructuredQuestionType = {
 	authorId: string;
 	authorEmail: string;
 	submittedAt: Date | null;
-	approved: boolean | null;
+	approved: boolean;
 	approvedBy: string | null;
 	answers: {
 		id: string;

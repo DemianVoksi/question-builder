@@ -126,7 +126,7 @@ export async function editQuestion(
 	question: string,
 	difficulty: 'easy' | 'medium' | 'hard',
 	category: string,
-	approved: boolean | null,
+	approved: boolean,
 	approvedBy: string | null
 ) {
 	const session = await auth();
