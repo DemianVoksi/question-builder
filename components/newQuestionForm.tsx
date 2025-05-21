@@ -87,9 +87,9 @@ const NewQuestionForm = () => {
 
 			// add answers
 			for (const value of Object.values(data.answers)) {
-				console.log(
-					`Answer ${value} is: ${(value === finalCorrect).toString()}`
-				);
+				// console.log(
+				// 	`Answer ${value} is: ${(value === finalCorrect).toString()}`
+				// );
 				addAnswer(value, value === finalCorrect, questionId);
 			}
 

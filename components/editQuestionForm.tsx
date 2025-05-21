@@ -18,7 +18,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { editQuestion, fetchQuestions } from '@/db/actions';
+import {
+	editAnswer,
+	editQuestion,
+	editTag,
+	fetchQuestions,
+} from '@/db/actions';
 import { useStateContext } from '@/lib/contextProvider';
 import {
 	QuestionFormSchema,
@@ -81,30 +86,35 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 			const correctAnswerChoice = data.correctAnswer.toString();
 			const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
 			const finalCorrect = data.answers[correctAnswerKey];
+			const approvedBy = data.approvedBy || null;
 
 			const isTrue = new Map();
 			for (const [key, value] of Object.entries(data.answers)) {
 				isTrue.set(key, value === correctAnswerKey ? true : false);
 			}
 
-			// console.log('Question;', data.question);
-			// console.log('Answers:', data.answers);
-			// console.log('Correct answer:', finalCorrect);
-			// console.log('Difficulty:', data.difficulty);
-			// console.log('Category:', data.category);
-			// console.log('Approved:', data.approved);
-			// data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
-
-			const approvedBy = data.approvedBy || null;
-
+			// edit question
 			await editQuestion(
 				props.questionId,
 				data.question,
 				data.difficulty,
 				data.category,
-				data.approved ?? null,
+				data.approved,
 				approvedBy
 			);
+
+			// edit answers
+			for (const value of Object.values(data.answers)) {
+				editAnswer(value, value === finalCorrect, props.questionId);
+			}
+
+			// edit tags
+			if (data.tags) {
+				for (const tag of data.tags) {
+					await editTag(tag.tag, props.questionId);
+				}
+			}
+
 			setOpen(false);
 			const newQuestions = await fetchQuestions();
 			setFilteredQuestions(newQuestions);
