@@ -152,6 +152,7 @@ export async function editQuestion(
 			.where(eq(questions.id, questionId));
 		revalidatePath('/');
 	} catch (error) {
+		console.log(error);
 		throw new Error('Failed to edit question');
 	}
 }

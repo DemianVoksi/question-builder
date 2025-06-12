@@ -32,7 +32,7 @@ export const QuestionFormSchema = z.object({
 	difficulty: z.enum(['easy', 'medium', 'hard']),
 	category: z.string().min(1),
 	approved: z.boolean(),
-	approvedBy: z.string().optional(),
+	approvedBy: z.string().nullable(),
 });
 
 export type QuestionFormType = z.infer<typeof QuestionFormSchema>;

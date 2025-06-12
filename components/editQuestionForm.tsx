@@ -1,6 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
+
 import {
 	Dialog,
 	DialogContent,
@@ -48,6 +50,8 @@ import { Switch } from './ui/switch';
 const EditQuestionForm = (props: StructuredQuestionType) => {
 	const [open, setOpen] = useState(false);
 	const { setFilteredQuestions } = useStateContext();
+	const { data: session } = useSession();
+	const userEmail = session?.user?.id || null;
 
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
@@ -385,7 +389,14 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 												<Switch
 													id='approved'
 													checked={field.value}
-													onCheckedChange={field.onChange}
+													onCheckedChange={(checked) => {
+														field.onChange(checked);
+														if (checked) {
+															form.setValue('approvedBy', userEmail);
+														} else {
+															form.setValue('approvedBy', null);
+														}
+													}}
 												/>
 											</div>
 										)}
