@@ -1,7 +1,11 @@
-import { deleteQuestion, fetchQuestions } from '@/db/actions';
+import {
+	deleteQuestion,
+	fetchQuestions,
+	getSessionEmailFromId,
+} from '@/db/actions';
 import { useStateContext } from '@/lib/contextProvider';
 import { StructuredQuestionType } from '@/types/types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import EditQuestionForm from './editQuestionForm';
 import {
 	Accordion,
@@ -27,6 +31,19 @@ const SingleQuestion = ({
 	tags,
 }: SingleQuestionProps) => {
 	const { setFilteredQuestions } = useStateContext();
+	const [approvedByEmail, setApprovedByEmail] = useState<string>();
+
+	useEffect(() => {
+		const userEmailFunc = async () => {
+			if (approvedBy) {
+				const userEmailObject = await getSessionEmailFromId(approvedBy!);
+				const userEmail = userEmailObject[0].field1;
+				setApprovedByEmail(userEmail);
+			} else {
+			}
+		};
+		userEmailFunc();
+	}, []);
 
 	function handleAnswerColor(answerTrue: boolean) {
 		if (answerTrue) {
@@ -119,7 +136,7 @@ const SingleQuestion = ({
 						</div>
 						<div className='flex flex-col gap-2 border-r border-zinc-200 px-3'>
 							<div>Approved: {approved ? 'Yes' : 'No'}</div>
-							{approvedBy && <div>Approved by: {approvedBy}</div>}
+							{approvedBy && <div>Approved by: {approvedByEmail}</div>}
 						</div>
 						<div className='flex flex-1 flex-col justify-end items-end pr-2 space-y-2'>
 							<div>
