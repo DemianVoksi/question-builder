@@ -1,6 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
+
 import {
 	Dialog,
 	DialogContent,
@@ -18,7 +20,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { editQuestion, fetchQuestions } from '@/db/actions';
+import {
+	editAnswer,
+	editQuestion,
+	editTag,
+	fetchQuestions,
+} from '@/db/actions';
 import { useStateContext } from '@/lib/contextProvider';
 import {
 	QuestionFormSchema,
@@ -43,6 +50,8 @@ import { Switch } from './ui/switch';
 const EditQuestionForm = (props: StructuredQuestionType) => {
 	const [open, setOpen] = useState(false);
 	const { setFilteredQuestions } = useStateContext();
+	const { data: session } = useSession();
+	const userEmail = session?.user?.id || null;
 
 	const form = useForm<QuestionFormType>({
 		resolver: zodResolver(QuestionFormSchema),
@@ -81,28 +90,35 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 			const correctAnswerChoice = data.correctAnswer.toString();
 			const correctAnswerKey = correctAnswerChoice as keyof typeof data.answers;
 			const finalCorrect = data.answers[correctAnswerKey];
+			const approvedBy = data.approvedBy || null;
 
 			const isTrue = new Map();
 			for (const [key, value] of Object.entries(data.answers)) {
 				isTrue.set(key, value === correctAnswerKey ? true : false);
 			}
 
-			console.log('Question;', data.question);
-			console.log('Answers:', data.answers);
-			console.log('Correct answer:', finalCorrect);
-			console.log('Difficulty:', data.difficulty);
-			console.log('Category:', data.category);
-			console.log('Approved:', data.approved);
-			data.tags?.forEach((tag) => console.log('Tag:', tag.tag));
-
+			// edit question
 			await editQuestion(
 				props.questionId,
 				data.question,
 				data.difficulty,
 				data.category,
-				data.approved ?? null,
-				data.approvedBy ?? null
+				data.approved,
+				approvedBy
 			);
+
+			// edit answers
+			for (const value of Object.values(data.answers)) {
+				editAnswer(value, value === finalCorrect, props.questionId);
+			}
+
+			// edit tags
+			if (data.tags) {
+				for (const tag of data.tags) {
+					await editTag(tag.tag, props.questionId);
+				}
+			}
+
 			setOpen(false);
 			const newQuestions = await fetchQuestions();
 			setFilteredQuestions(newQuestions);
@@ -373,7 +389,14 @@ const EditQuestionForm = (props: StructuredQuestionType) => {
 												<Switch
 													id='approved'
 													checked={field.value}
-													onCheckedChange={field.onChange}
+													onCheckedChange={(checked) => {
+														field.onChange(checked);
+														if (checked) {
+															form.setValue('approvedBy', userEmail);
+														} else {
+															form.setValue('approvedBy', null);
+														}
+													}}
 												/>
 											</div>
 										)}

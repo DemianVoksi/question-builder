@@ -55,6 +55,14 @@ function restructureQuestions(
 	return Array.from(questionMap.values());
 }
 
+export async function getSessionEmailFromId(id: string) {
+	const userEmail = await db
+		.select({ field1: users.email })
+		.from(users)
+		.where(eq(users.id, id));
+	return userEmail;
+}
+
 export async function fetchQuestions() {
 	const session = await auth();
 
@@ -126,7 +134,7 @@ export async function editQuestion(
 	question: string,
 	difficulty: 'easy' | 'medium' | 'hard',
 	category: string,
-	approved: boolean | null,
+	approved: boolean,
 	approvedBy: string | null
 ) {
 	const session = await auth();
@@ -152,6 +160,7 @@ export async function editQuestion(
 			.where(eq(questions.id, questionId));
 		revalidatePath('/');
 	} catch (error) {
+		console.log(error);
 		throw new Error('Failed to edit question');
 	}
 }

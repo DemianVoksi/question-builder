@@ -50,7 +50,7 @@ export const questions = pgTable('question', {
 	submittedAt: timestamp('submitted_at').defaultNow(),
 	difficulty: difficultyEnum('difficulty').notNull(),
 	category: text('category').notNull(),
-	approved: boolean('approved').default(false),
+	approved: boolean('approved').default(false).notNull(),
 	approvedBy: text('approved_by').references(() => users.id),
 });
 
